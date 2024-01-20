@@ -1,4 +1,4 @@
-import { takeEvery, put } from "redux-saga/effects";
+import { takeEvery, put, debounce } from "redux-saga/effects";
 import axios from "axios";
 
 import {
@@ -18,6 +18,7 @@ function* getProductListSaga(action) {
             order,
             from,
             to,
+            keyword,
         } = action.payload;
         const result = yield axios.get("http://localhost:8080/books", {
             params: {
@@ -31,6 +32,9 @@ function* getProductListSaga(action) {
                         price_gte: from,
                         price_lte: to,
                     }),
+                ...(keyword && {
+                    q: keyword,
+                }),
             },
         });
         yield put(
@@ -50,5 +54,5 @@ function* getProductListSaga(action) {
 }
 
 export default function* productSaga() {
-    yield takeEvery(getProductListRequest, getProductListSaga);
+    yield debounce(300, getProductListRequest, getProductListSaga);
 }

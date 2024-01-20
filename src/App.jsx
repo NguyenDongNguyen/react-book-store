@@ -23,11 +23,12 @@ import NotFound from './components/NotFound';
 // import ManageOrderPage from './pages/manageOrder';
 
 const Layout = () => {
+  const [searchTerm, setSearchTerm] = useState('')
 
   return (
     <div className='layout-app'>
-      <Header />
-      <Outlet />
+      <Header searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <Outlet context={[searchTerm, setSearchTerm]} />
       <Footer />
     </div>
   )

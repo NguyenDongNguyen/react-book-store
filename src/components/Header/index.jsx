@@ -13,6 +13,7 @@ import '../../styles/global.scss'
 // import ManageAccount from '../Account/ManageAccount';
 
 const Header = (props) => {
+    const {searchTerm, setSearchTerm} = props
 
     const [openDrawer, setOpenDrawer] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -74,6 +75,7 @@ const Header = (props) => {
                             <input
                                 className="input-search" type={'text'}
                                 placeholder="Bạn tìm gì hôm nay"
+                                onChange={(e) => setSearchTerm(e.target.value)}
                             />
                         </div>
 

@@ -6,17 +6,20 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { getCategoryListRequest } from '../../redux/slicers/category.slice';
 import { PRODUCT_LIMIT } from '../../constants/paging'
+import { useOutletContext } from 'react-router-dom';
 
 const Home = () => {
     const [form] = Form.useForm();
     const dispatch = useDispatch()
 
+    const [searchTerm, setSearchTerm] = useOutletContext()
+    const [filter, setFilter] = useState([]);
+    const [sort, setSort] = useState(['updatedAt', 'desc']);
+    
     const { productList } = useSelector((state) => state.product)
     const { meta } = useSelector((state) => state.product.productList)
     const { categoryList } = useSelector((state) => state.category)
 
-    const [filter, setFilter] = useState([]);
-    const [sort, setSort] = useState(['updatedAt', 'desc']);
 
     useEffect(() => {
         dispatch(getProductListRequest({
@@ -28,6 +31,20 @@ const Home = () => {
         }))
         dispatch(getCategoryListRequest())
     }, [])
+
+    useEffect(() => {
+        const searchBook = () => {
+            dispatch(getProductListRequest({
+                page: 1,
+                limit: PRODUCT_LIMIT,
+                categoryId: filter,
+                sort: sort[0],
+                order: sort[1],
+                keyword: searchTerm
+            }))
+        }
+        searchBook()
+    }, [searchTerm])
 
     const handleChangeFilter = (changedValues, values) => {
         setFilter(values.category)

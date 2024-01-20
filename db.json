@@ -48,9 +48,9 @@
         },
         {
             "id": 4,
-            "thumbnail": "https://salt.tikicdn.com/cache/w400/ts/product/58/07/37/1759fac1d346ab9b567c252d136b9d94.jpg",
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/a2/56/56/341425768114119392af4e217bbe4db2.jpg.webp",
             "slider": [
-                "https://product.hstatic.net/1000363559/product/2022_10_25_14_34_14_5-390x510_033fd9c198b546d89f508bf2d306c3a6.jpg"
+                "https://m.media-amazon.com/images/I/81KIm9k2JjL._AC_UF1000,1000_QL80_.jpg"
             ],
             "mainText": "Diary Of A Wimpy Kid 09: The Long Haul",
             "author": "Fahasa",
@@ -109,16 +109,17 @@
         },
         {
             "id": 8,
-            "thumbnail": "https://salt.tikicdn.com/cache/w400/ts/product/58/07/37/1759fac1d346ab9b567c252d136b9d94.jpg",
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/31/62/fd/afa213ab31cefd06d49b977a2f4ab594.jpg.webp",
             "slider": [
-                "https://product.hstatic.net/1000363559/product/2022_10_25_14_34_14_5-390x510_033fd9c198b546d89f508bf2d306c3a6.jpg"
+                "https://salt.tikicdn.com/cache/750x750/ts/product/2b/a3/84/09fd50a49274ca8b39a91cc535fd1996.jpg.webp",
+                "https://salt.tikicdn.com/cache/750x750/ts/product/66/df/14/347d5cceff3af09e4967913742528d65.jpg.webp"
             ],
             "mainText": "Truyện Tranh Đam Mỹ - Làm Dâu Nhà Sói - Hana Inu",
             "author": "Nhà sách Nam Trung",
             "price": 52000,
             "sold": 33,
             "quantity": 1000,
-            "categoryId": 9,
+            "categoryId": 4,
             "createdAt": "2023-12-25T13:12:37.757+00:00",
             "updatedAt": "2023-12-25T13:12:37.757+00:00"
         },
@@ -134,7 +135,7 @@
             "price": 231000,
             "sold": 33,
             "quantity": 1000,
-            "categoryId": 9,
+            "categoryId": 6,
             "createdAt": "2023-12-25T13:12:37.757+00:00",
             "updatedAt": "2023-12-25T13:12:37.757+00:00"
         },
@@ -149,7 +150,7 @@
             "price": 163000,
             "sold": 33,
             "quantity": 1000,
-            "categoryId": 9,
+            "categoryId": 10,
             "createdAt": "2023-12-25T13:12:37.757+00:00",
             "updatedAt": "2023-12-25T13:12:37.757+00:00"
         }
