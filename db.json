@@ -1,0 +1,238 @@
+{
+    "books": [
+        {
+            "id": 1,
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/69/2c/57/9d96bec7a87b33daf7fae7a717f2058c.jpg.webp",
+            "slider": [
+                "https://salt.tikicdn.com/cache/750x750/ts/product/85/90/5a/79bf80fcadf4ea778862b8f136e09925.png.webp"
+            ],
+            "mainText": "Tết Ở Làng Địa Ngục",
+            "author": "Nhà Xuất Bản Thanh Niên",
+            "price": 127000,
+            "sold": 29,
+            "quantity": 1000,
+            "categoryId": 1,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 2,
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/87/08/0e/db4f09b6ee8bc317f097ebcca1933a2d.png.webp",
+            "slider": [
+                "https://salt.tikicdn.com/cache/750x750/ts/product/a9/44/6b/fce361158f33378dbf55a1e24d2ad273.png.webp",
+                "https://salt.tikicdn.com/cache/750x750/ts/product/e6/70/4b/76a1919b54542ce2e6526da9c10c9fae.png.webp"
+            ],
+            "mainText": "Kế Toán Vỉa Hè - Thực Hành Báo Cáo Tài Chính Căn Bản",
+            "author": "Nhà Xuất Bản Thế Giới",
+            "price": 169000,
+            "sold": 20,
+            "quantity": 1000,
+            "categoryId": 2,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 3,
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/48/6b/db/b5faf7635fb0d5aaed95d90d062c3046.jpg.webp",
+            "slider": [
+                "https://salt.tikicdn.com/cache/750x750/ts/product/71/0a/3f/7cba5c8dd13cdb44291bc1ad2c27c06d.jpg.webp"
+            ],
+            "mainText": "Thám Tử Lừng Danh Conan Tập 101",
+            "author": "Gosho Aoyama",
+            "price": 90000,
+            "sold": 20,
+            "quantity": 1000,
+            "categoryId": 3,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 4,
+            "thumbnail": "https://salt.tikicdn.com/cache/w400/ts/product/58/07/37/1759fac1d346ab9b567c252d136b9d94.jpg",
+            "slider": [
+                "https://product.hstatic.net/1000363559/product/2022_10_25_14_34_14_5-390x510_033fd9c198b546d89f508bf2d306c3a6.jpg"
+            ],
+            "mainText": "Diary Of A Wimpy Kid 09: The Long Haul",
+            "author": "Fahasa",
+            "price": 111123,
+            "sold": 30,
+            "quantity": 999,
+            "categoryId": 5,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 5,
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/dd/29/02/d51ec3ef267f44e5320f6a4d5a66efd3.png.webp",
+            "slider": [
+                "https://salt.tikicdn.com/cache/750x750/ts/product/23/a1/f6/0d2642b6da2ccf17d594648060055f8e.jpg.webp"
+            ],
+            "mainText": "Nghệ Thuật Tư Duy Chiến Lược",
+            "author": "Avinash K. Dixit, Barry J. Nalebuff",
+            "price": 178000,
+            "sold": 28,
+            "quantity": 1000,
+            "categoryId": 7,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 6,
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/8f/d5/8f/cccac7a0cf0851b0d3d401a243e27a23.png.webp",
+            "slider": [
+                "https://salt.tikicdn.com/cache/750x750/ts/product/e8/ec/d8/90ae10a1e8327ef8697b44a2ba4877b1.png.webp"
+            ],
+            "mainText": "Đọc vị bất kỳ ai - Để không bị lợi dụng (Tái bản)",
+            "author": "David J. Liebermen",
+            "price": 60000,
+            "sold": 25,
+            "quantity": 1000,
+            "categoryId": 8,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 7,
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/d4/cd/ac/79d4182818035ee5c9f7109e76730835.png.webp",
+            "slider": [
+                "https://salt.tikicdn.com/cache/750x750/ts/product/d1/ec/e1/28986af615827ca900c6b69794095d80.jpg.webp",
+                "https://salt.tikicdn.com/cache/750x750/ts/product/f6/07/71/babbb26fed6550b948d65818e1d4bc08.jpg.webp"
+            ],
+            "mainText": "Sách Hiểu Về Trái Tim (Tái Bản 2019) - Minh Niệm",
+            "author": "Minh Niệm",
+            "price": 128000,
+            "sold": 33,
+            "quantity": 1000,
+            "categoryId": 9,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 8,
+            "thumbnail": "https://salt.tikicdn.com/cache/w400/ts/product/58/07/37/1759fac1d346ab9b567c252d136b9d94.jpg",
+            "slider": [
+                "https://product.hstatic.net/1000363559/product/2022_10_25_14_34_14_5-390x510_033fd9c198b546d89f508bf2d306c3a6.jpg"
+            ],
+            "mainText": "Truyện Tranh Đam Mỹ - Làm Dâu Nhà Sói - Hana Inu",
+            "author": "Nhà sách Nam Trung",
+            "price": 52000,
+            "sold": 33,
+            "quantity": 1000,
+            "categoryId": 9,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 9,
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/e6/86/f9/0ac8cf9fdd477515093c2bab5a7035a9.jpg.webp",
+            "slider": [
+                "https://salt.tikicdn.com/cache/750x750/ts/product/25/23/e1/c018f5cfe1e2233da300f4955764dcd6.jpg.webp",
+                "https://salt.tikicdn.com/cache/750x750/ts/product/d7/f8/67/d47b87c08fa920c817cbc5e8be9e613d.jpg.webp"
+            ],
+            "mainText": "Đường Xưa Mây Trắng - Theo Gót Chân Bụt (Tái Bản)",
+            "author": "Thích Nhất Hạnh",
+            "price": 231000,
+            "sold": 33,
+            "quantity": 1000,
+            "categoryId": 9,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        },
+        {
+            "id": 10,
+            "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/9e/ea/fd/d3a9cfb9f692cbe7933c8dfeae6230db.jpg.webp",
+            "slider": [
+                "https://salt.tikicdn.com/cache/750x750/ts/product/85/34/30/e95b43b12692fdff1bad6f1beb7640e5.jpg.webp"
+            ],
+            "mainText": "Muôn Kiếp Nhân Sinh 3 (Bìa Mềm)",
+            "author": "Nguyên Phong",
+            "price": 163000,
+            "sold": 33,
+            "quantity": 1000,
+            "categoryId": 9,
+            "createdAt": "2023-12-25T13:12:37.757+00:00",
+            "updatedAt": "2023-12-25T13:12:37.757+00:00"
+        }
+    ],
+    "categories": [
+        {
+            "id": 1,
+            "name": "Business"
+        },
+        {
+            "id": 2,
+            "name": "Arts"
+        },
+        {
+            "id": 3,
+            "name": "Teen"
+        },
+        {
+            "id": 4,
+            "name": "Cooking"
+        },
+        {
+            "id": 5,
+            "name": "Entertainment"
+        },
+        {
+            "id": 6,
+            "name": "History"
+        },
+        {
+            "id": 7,
+            "name": "Music"
+        },
+        {
+            "id": 8,
+            "name": "Sports"
+        },
+        {
+            "id": 9,
+            "name": "Comics"
+        },
+        {
+            "id": 10,
+            "name": "Travel"
+        }
+    ],
+    "users": [
+        {
+            "id": "65897fcc7c97f90d01ab8d78",
+            "fullName": "I'm Admin ",
+            "password": "$2a$10$G9Mzy2DVsidAAGYzSvb/U.hykW0wVzR5v.G/WB3le44oDMUEwvAq2",
+            "email": "admin@gmail.com",
+            "phone": "123456789",
+            "role": "ADMIN",
+            "avatar": "baby9-2d5c12e52396110e87238102f12175d245.jpg",
+            "isActive": true,
+            "createdAt": "2023-12-25T13:12:37.719+00:00",
+            "updatedAt": "2024-01-13T15:01:24.402+00:00"
+        }
+    ],
+    "orders": [
+        {
+            "id": "659fb3e0fd9201512ad795bb",
+            "name": "I'm Admin",
+            "address": "Quang Nam",
+            "phone": "123456789",
+            "type": "COD",
+            "detail": [
+                {
+                    "bookName": "Truyện Tranh Làm Dâu Nhà Sói - Hana Inu",
+                    "quantity": 1,
+                    "id": "65897fcc7c97f90d01ab8d84"
+                },
+                {
+                    "bookName": "Truyện Tranh Làm Dâu Nhà Sói - Hana Inu",
+                    "quantity": 1,
+                    "id": "65897fcc7c97f90d01ab8d84"
+                }
+            ],
+            "totalPrice": 344000,
+            "createdAt": "2024-01-11T09:24:48.748+00:00",
+            "updatedAt": "2024-01-11T09:24:48.748+00:00",
+            "userId": "65897fcc7c97f90d01ab8d78"
+        }
+    ]
+}
