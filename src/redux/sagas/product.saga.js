@@ -5,6 +5,9 @@ import {
     getProductListRequest,
     getProductListSuccess,
     getProductListFail,
+    getProductDetailRequest,
+    getProductDetailSuccess,
+    getProductDetailFail,
 } from "../slicers/product.slice";
 
 function* getProductListSaga(action) {
@@ -53,6 +56,17 @@ function* getProductListSaga(action) {
     }
 }
 
+function* getProductDetailSaga(action) {
+    try {
+        const { id } = action.payload;
+        const result = yield axios.get(`http://localhost:8080/books/${id}`);
+        yield put(getProductDetailSuccess({ data: result.data }));
+    } catch (e) {
+        yield put(getProductDetailFail({ error: "Lỗi..." }));
+    }
+}
+
 export default function* productSaga() {
     yield debounce(300, getProductListRequest, getProductListSaga);
+    yield takeEvery(getProductDetailRequest, getProductDetailSaga);
 }

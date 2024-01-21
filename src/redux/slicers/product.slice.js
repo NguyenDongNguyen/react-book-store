@@ -12,6 +12,11 @@ const initialState = {
         loading: false,
         error: null,
     },
+    productDetail: {
+        data: {},
+        loading: false,
+        error: null,
+    },
 };
 
 export const productSlice = createSlice({
@@ -36,6 +41,22 @@ export const productSlice = createSlice({
             state.productList.error = error;
             state.productList.loading = false;
         },
+
+        // getProductDetail
+        getProductDetailRequest: (state) => {
+            state.productDetail.loading = true;
+            state.productDetail.error = null;
+        },
+        getProductDetailSuccess: (state, action) => {
+            const { data } = action.payload;
+            state.productDetail.data = data;
+            state.productDetail.loading = false;
+        },
+        getProductDetailFail: (state, action) => {
+            const { error } = action.payload;
+            state.productDetail.error = error;
+            state.productDetail.loading = false;
+        },
         updateProduct: () => {
             // do something
         },
@@ -45,7 +66,13 @@ export const productSlice = createSlice({
     },
 });
 
-export const { getProductListRequest, getProductListSuccess, getProductListFail } =
-    productSlice.actions;
+export const {
+    getProductListRequest,
+    getProductListSuccess,
+    getProductListFail,
+    getProductDetailRequest,
+    getProductDetailSuccess,
+    getProductDetailFail,
+} = productSlice.actions;
 
 export default productSlice.reducer;

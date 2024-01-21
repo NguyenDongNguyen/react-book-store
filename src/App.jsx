@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import LoginPage from './pages/login';
 // import ContactPage from './pages/contact';
-// import BookPage from './pages/book';
+import BookDetailPage from './pages/bookDetail';
 // import AdminPage from './pages/admin';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -47,10 +47,10 @@ export default function App() {
       //   path: "contact",
       //   element: <ContactPage />,
       // },
-      // {
-      //   path: "book/:slug",
-      //   element: <BookPage />,
-      // },
+      {
+        path: "book/:slug",
+        element: <BookDetailPage />,
+      },
       // {
       //   path: "order",
       //   element: <OrderPage />,
