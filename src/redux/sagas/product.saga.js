@@ -23,7 +23,7 @@ function* getProductListSaga(action) {
             to,
             keyword,
         } = action.payload;
-        const result = yield axios.get("http://localhost:8080/books", {
+        const result = yield axios.get("http://localhost:8080/products", {
             params: {
                 _page: page,
                 _limit: limit,
@@ -59,7 +59,7 @@ function* getProductListSaga(action) {
 function* getProductDetailSaga(action) {
     try {
         const { id } = action.payload;
-        const result = yield axios.get(`http://localhost:8080/books/${id}`);
+        const result = yield axios.get(`http://localhost:8080/products/${id}`);
         yield put(getProductDetailSuccess({ data: result.data }));
     } catch (e) {
         yield put(getProductDetailFail({ error: "Lỗi..." }));

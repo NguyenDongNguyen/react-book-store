@@ -1,5 +1,5 @@
 {
-    "books": [
+    "products": [
         {
             "id": 1,
             "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/69/2c/57/9d96bec7a87b33daf7fae7a717f2058c.jpg.webp",
@@ -49,8 +49,7 @@
         {
             "id": 4,
             "thumbnail": "https://salt.tikicdn.com/cache/750x750/ts/product/a2/56/56/341425768114119392af4e217bbe4db2.jpg.webp",
-            "slider": [
-            ],
+            "slider": [],
             "mainText": "Diary Of A Wimpy Kid 09: The Long Haul",
             "author": "Fahasa",
             "price": 111123,
@@ -233,6 +232,20 @@
             "createdAt": "2024-01-11T09:24:48.748+00:00",
             "updatedAt": "2024-01-11T09:24:48.748+00:00",
             "userId": "65897fcc7c97f90d01ab8d78"
+        }
+    ],
+    "carts": [
+        {
+            "id": 1,
+            "userId": 1,
+            "productId": 1,
+            "quantity": 1
+        },
+        {
+            "id": 2,
+            "userId": 1,
+            "productId": 2,
+            "quantity": 1
         }
     ]
 }
