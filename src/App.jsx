@@ -10,6 +10,7 @@ import Footer from "./components/Footer";
 import Home from "./components/Home";
 import RegisterPage from "./pages/register";
 import NotFound from "./components/NotFound";
+import { useDispatch } from "react-redux";
 // import ProtectedRoute from './components/ProtectedRoute';
 // import LayoutAdmin from './components/Admin/LayoutAdmin';
 // import ManageUser from './pages/manageUser';
@@ -17,6 +18,8 @@ import NotFound from "./components/NotFound";
 // import OrderPage from './pages/order';
 // import HistoryPage from './components/Order/History';
 // import ManageOrderPage from './pages/manageOrder';
+import { jwtDecode } from "jwt-decode";
+import { getUserInfoRequest } from "./redux/slicers/auth.slice";
 
 const Layout = () => {
     return (
@@ -29,6 +32,20 @@ const Layout = () => {
 };
 
 export default function App() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+            const tokenData = jwtDecode(accessToken);
+            dispatch(
+                getUserInfoRequest({
+                    id: tokenData.sub,
+                })
+            );
+        }
+    }, []);
+
     const router = createBrowserRouter([
         {
             path: "/",

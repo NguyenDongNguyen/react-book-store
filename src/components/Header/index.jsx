@@ -25,6 +25,7 @@ import { getProductListRequest } from "../../redux/slicers/product.slice";
 import { PRODUCT_LIMIT } from "../../constants/paging";
 import SearchItem from "./SearchItem";
 import { getCartListRequest } from "../../redux/slicers/cart.slice";
+import { logoutRequest } from "../../redux/slicers/auth.slice";
 const { Search } = Input;
 
 const Header = (props) => {
@@ -39,7 +40,7 @@ const Header = (props) => {
 
     const { productList } = useSelector((state) => state.product);
     const { cartList } = useSelector((state) => state.cart);
-    console.log("🚀 ~ Header ~ cartList:", cartList);
+    const { userInfo } = useSelector((state) => state.auth);
 
     useEffect(() => {
         dispatch(
@@ -60,8 +61,6 @@ const Header = (props) => {
             })
         );
     }, []);
-
-    const handleLogout = async () => {};
 
     let items = [
         {
@@ -88,7 +87,10 @@ const Header = (props) => {
         },
         {
             label: (
-                <label style={{ cursor: "pointer" }} onClick={() => handleLogout()}>
+                <label
+                    style={{ cursor: "pointer" }}
+                    onClick={() => dispatch(logoutRequest())}
+                >
                     Đăng xuất
                 </label>
             ),
@@ -219,7 +221,7 @@ const Header = (props) => {
                                     <a onClick={(e) => e.preventDefault()}>
                                         <Space>
                                             {/* <Avatar src={urlAvatar} />  */}
-                                            Đông Nguyên
+                                            {userInfo?.data?.fullName}
                                         </Space>
                                     </a>
                                 </Dropdown>
@@ -262,7 +264,7 @@ const Header = (props) => {
                 <p
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                        handleLogout();
+                        dispatch(logoutRequest());
                         setOpenDrawer(false);
                     }}
                 >

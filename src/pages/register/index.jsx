@@ -1,23 +1,57 @@
-import { Button, Input, Form, Divider, Row, Col, message, notification} from "antd";
-import './register.scss'
-import { useState } from "react";
+import { Button, Input, Form, Divider, Row, Col, message, notification } from "antd";
+import "./register.scss";
 import { useNavigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { registerRequest } from "../../redux/slicers/auth.slice";
+import { useEffect } from "react";
 
 function RegisterPage() {
-    const navigate = useNavigate()
-    const [isSubmit, setIsSubmit] = useState(false)
+    const [registerForm] = Form.useForm();
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { registerData } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (registerData.error) {
+            registerForm.setFields([
+                {
+                    name: "email",
+                    errors: [registerData.error],
+                },
+            ]);
+        }
+    }, [registerData.error]);
+
+    const handleRegister = (values) => {
+        const { fullName, email, password, phone } = values;
+        dispatch(
+            registerRequest({
+                data: {
+                    fullName: fullName,
+                    email: email,
+                    password: password,
+                    phone: phone,
+                    role: "user",
+                    birthday: null,
+                },
+                callback: () => navigate("/login"),
+            })
+        );
+    };
 
     return (
         <Row className="register-container">
-            <Col xs={24} md={10} className="register-page"  >
+            <Col xs={24} md={10} className="register-page">
                 <h1 style={{ textAlign: "center" }}>Đăng Ký Người Dùng Mới</h1>
                 <Divider />
                 <Form
+                    form={registerForm}
                     name="register"
-                    layout="vertical" 
+                    layout="vertical"
                     labelCol={{ span: 6 }}
-                    style={{maxWidth: 600, margin: '0 auto'}}
-                    // onFinish={(values) => handleRegister(values)}
+                    style={{ maxWidth: 600, margin: "0 auto" }}
+                    onFinish={(values) => handleRegister(values)}
                     autoComplete="off"
                 >
                     <Form.Item
@@ -57,9 +91,32 @@ function RegisterPage() {
                             },
                         ]}
                     >
-                        <Input.Password
-                            placeholder="Password"
-                        />
+                        <Input.Password placeholder="Password" />
+                    </Form.Item>
+                    <Form.Item
+                        label="Confirm password"
+                        name="confirmPassword"
+                        rules={[
+                            {
+                                required: true,
+                                message: "Mật khẩu là bắt buộc",
+                            },
+                            (params) => ({
+                                validator(_, value) {
+                                    if (
+                                        !value ||
+                                        params.getFieldValue("password") === value
+                                    ) {
+                                        return Promise.resolve();
+                                    }
+                                    return Promise.reject(
+                                        new Error("Mật khẩu xác nhận không khớp")
+                                    );
+                                },
+                            }),
+                        ]}
+                    >
+                        <Input.Password placeholder="Confirm password" />
                     </Form.Item>
                     <Form.Item
                         label="Phone"
@@ -75,14 +132,19 @@ function RegisterPage() {
                     >
                         <Input placeholder="Phone number" />
                     </Form.Item>
-                    <Form.Item style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button type="primary" htmlType="submit" loading={isSubmit}>
+                    <Form.Item style={{ display: "flex", justifyContent: "center" }}>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={registerData.loading}
+                        >
                             Register
                         </Button>
                     </Form.Item>
-                    <p className="text text-normal">Bạn đã có tài khoản ?
+                    <p className="text text-normal">
+                        Bạn đã có tài khoản ?
                         <span>
-                            <Link to='/login'> Đăng Nhập </Link>
+                            <Link to="/login"> Đăng Nhập </Link>
                         </span>
                     </p>
                 </Form>
