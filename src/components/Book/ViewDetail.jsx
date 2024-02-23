@@ -9,10 +9,17 @@ import BookLoader from "./BookLoader";
 import { useDispatch, useSelector } from "react-redux";
 // import { doAddBookAction } from '../../redux/order/orderSlice';
 import { useNavigate } from "react-router-dom";
+import {
+    addCartListRequest,
+    updateCartListRequest,
+} from "../../redux/slicers/cart.slice";
 
 const ViewDetail = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const dataBook = useSelector((state) => state.product.productDetail.data);
+    const { userInfo } = useSelector((state) => state.auth);
+    const { cartList } = useSelector((state) => state.cart);
 
     const [isOpenModalGallery, setIsOpenModalGallery] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,8 +30,7 @@ const ViewDetail = () => {
 
     useEffect(() => {
         let newImages = [];
-        console.log("🚀 ~ useEffect ~ dataBook:", dataBook);
-        if (dataBook.thumbnail) {
+        if (dataBook?.thumbnail) {
             newImages.push({
                 original: dataBook.thumbnail,
                 thumbnail: dataBook.thumbnail,
@@ -32,7 +38,7 @@ const ViewDetail = () => {
                 thumbnailClass: "thumbnail-image",
             });
         }
-        if (dataBook.slider) {
+        if (dataBook?.slider) {
             dataBook.slider.map((item) => {
                 newImages.push({
                     original: item,
@@ -46,11 +52,62 @@ const ViewDetail = () => {
     }, [dataBook.id]);
 
     const handleOnClickImage = () => {
-        //get current index onClick
-        // alert(refGallery?.current?.getCurrentIndex());
         setIsOpenModalGallery(true);
         setCurrentIndex(refGallery?.current?.getCurrentIndex() ?? 0);
-        // refGallery?.current?.fullScreen()
+    };
+
+    const handleChangeButton = (type) => {
+        if (type === "MINUS") {
+            if (currentQuantity - 1 <= 0) {
+                return;
+            }
+            setCurrentQuantity(currentQuantity - 1);
+        }
+        if (type === "PLUS") {
+            if (currentQuantity === +dataBook.quantity) {
+                return;
+            }
+            setCurrentQuantity(currentQuantity + 1);
+        }
+    };
+
+    const handleChangeInput = (value) => {
+        if (!isNaN(value)) {
+            if (+value > 0 && +value < +dataBook.quantity) {
+                setCurrentQuantity(+value);
+            }
+        }
+    };
+
+    const handleAddToCart = (quantity, book) => {
+        if (!userInfo.data.id) {
+            navigate("/login");
+            return;
+        }
+        let isExistIndex = cartList.data.findIndex((c) => c.productId === book.id);
+
+        if (isExistIndex > -1) {
+            console.log(">> update");
+            dispatch(
+                updateCartListRequest({
+                    id: cartList.data[isExistIndex].id,
+                    data: {
+                        quantity: cartList.data[isExistIndex].quantity + quantity,
+                    },
+                })
+            );
+        } else {
+            console.log(">> add");
+            dispatch(
+                addCartListRequest({
+                    data: {
+                        userId: userInfo.data.id,
+                        productId: book.id,
+                        quantity: quantity,
+                    },
+                })
+            );
+        }
     };
 
     return (
@@ -132,24 +189,48 @@ const ViewDetail = () => {
                                     <div className="quantity">
                                         <span className="left-side">Số lượng</span>
                                         <span className="right-side">
-                                            <button>
+                                            <button
+                                                onClick={() =>
+                                                    handleChangeButton("MINUS")
+                                                }
+                                            >
                                                 <MinusOutlined />
                                             </button>
-                                            <input value={currentQuantity} />
-                                            <button>
+                                            <input
+                                                onChange={(e) =>
+                                                    handleChangeInput(e.target.value)
+                                                }
+                                                value={currentQuantity}
+                                            />
+                                            <button
+                                                onClick={() =>
+                                                    handleChangeButton("PLUS")
+                                                }
+                                            >
                                                 <PlusOutlined />
                                             </button>
                                         </span>
                                     </div>
                                     <div className="buy">
-                                        <button className="cart">
+                                        <button
+                                            className="cart"
+                                            onClick={() =>
+                                                handleAddToCart(
+                                                    currentQuantity,
+                                                    dataBook
+                                                )
+                                            }
+                                        >
                                             <BsCartPlus className="icon-cart" />
                                             <span>Thêm vào giỏ hàng</span>
                                         </button>
                                         <button
                                             className="now"
                                             onClick={() => {
-                                                // handleAddToCart(currentQuantity, dataBook)
+                                                handleAddToCart(
+                                                    currentQuantity,
+                                                    dataBook
+                                                );
                                                 navigate("/order");
                                             }}
                                         >

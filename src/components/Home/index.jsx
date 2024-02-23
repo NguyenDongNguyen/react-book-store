@@ -12,6 +12,7 @@ import {
     Pagination,
     Flex,
     Drawer,
+    Spin,
 } from "antd";
 import "./home.scss";
 import { getProductListRequest } from "../../redux/slicers/product.slice";
@@ -318,84 +319,96 @@ const Home = () => {
                         </div>
                     </Col>
                     <Col md={20} xs={24}>
-                        <div
-                            style={{
-                                padding: "20px",
-                                background: "#fff",
-                                borderRadius: 5,
-                            }}
-                        >
-                            <Row>
-                                <Tabs
-                                    // defaultActiveKey="sold,desc"
-                                    items={items}
-                                    onChange={(value) => handleChangeSort(value)}
-                                    activeKey={`${searchParams.sort},${searchParams.order}`}
-                                    style={{ overflowX: "auto" }}
-                                />
-                            </Row>
-                            <Row
-                                className="customize-filter"
-                                onClick={() => setOpenViewSort(true)}
+                        <Spin spinning={productList.loading} tip="Loading...">
+                            <div
+                                style={{
+                                    padding: "20px",
+                                    background: "#fff",
+                                    borderRadius: 5,
+                                }}
                             >
-                                <span>
-                                    {" "}
-                                    <FilterTwoTone />
-                                    <span style={{ fontWeight: 500 }}> Lọc </span>
-                                </span>
-                            </Row>
-                            <Row className="customize-row">
-                                {productList.data.map((item, index) => {
-                                    return (
-                                        <div
-                                            className="column"
-                                            key={`book-${index}`}
-                                            onClick={() => handleRedirectBook(item)}
-                                        >
-                                            <div className="wrapper">
-                                                <div className="thumbnail">
-                                                    <img
-                                                        src={item.thumbnail}
-                                                        alt="thumbnail book"
-                                                    />
-                                                </div>
-                                                <div
-                                                    className="text"
-                                                    title={item.mainText}
-                                                >
-                                                    {item.mainText}
-                                                </div>
-                                                <div className="price">
-                                                    {new Intl.NumberFormat("vi-VN", {
-                                                        style: "currency",
-                                                        currency: "VND",
-                                                    }).format(item?.price ?? 0)}
-                                                </div>
-                                                <div className="rating">
-                                                    <Rate
-                                                        value={5}
-                                                        disabled
-                                                        style={{
-                                                            color: "#ffce3d",
-                                                            fontSize: 10,
-                                                        }}
-                                                    />
-                                                    <span>Đã bán {item.sold}</span>
+                                <Row>
+                                    <Tabs
+                                        // defaultActiveKey="sold,desc"
+                                        items={items}
+                                        onChange={(value) => handleChangeSort(value)}
+                                        activeKey={`${searchParams.sort},${searchParams.order}`}
+                                        style={{ overflowX: "auto" }}
+                                    />
+                                </Row>
+                                <Row
+                                    className="customize-filter"
+                                    onClick={() => setOpenViewSort(true)}
+                                >
+                                    <span>
+                                        {" "}
+                                        <FilterTwoTone />
+                                        <span style={{ fontWeight: 500 }}>
+                                            {" "}
+                                            Lọc{" "}
+                                        </span>
+                                    </span>
+                                </Row>
+                                <Row className="customize-row">
+                                    {productList.data.map((item, index) => {
+                                        return (
+                                            <div
+                                                className="column"
+                                                key={`book-${index}`}
+                                                onClick={() =>
+                                                    handleRedirectBook(item)
+                                                }
+                                            >
+                                                <div className="wrapper">
+                                                    <div className="thumbnail">
+                                                        <img
+                                                            src={item.thumbnail}
+                                                            alt="thumbnail book"
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        className="text"
+                                                        title={item.mainText}
+                                                    >
+                                                        {item.mainText}
+                                                    </div>
+                                                    <div className="price">
+                                                        {new Intl.NumberFormat(
+                                                            "vi-VN",
+                                                            {
+                                                                style: "currency",
+                                                                currency: "VND",
+                                                            }
+                                                        ).format(item?.price ?? 0)}
+                                                    </div>
+                                                    <div className="rating">
+                                                        <Rate
+                                                            value={5}
+                                                            disabled
+                                                            style={{
+                                                                color: "#ffce3d",
+                                                                fontSize: 10,
+                                                            }}
+                                                        />
+                                                        <span>
+                                                            Đã bán {item.sold}
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                })}
-                            </Row>
-                            <Divider />
-                            {productList.data.length < meta.total && (
-                                <Flex justify="center">
-                                    <Button onClick={handleShowMore}>
-                                        Hiển thị thêm
-                                    </Button>
-                                </Flex>
-                            )}
-                        </div>
+                                        );
+                                    })}
+                                </Row>
+                                <Divider />
+                                {productList.data.length < meta.total && (
+                                    <Flex justify="center">
+                                        <Button onClick={handleShowMore}>
+                                            Hiển thị thêm
+                                        </Button>
+                                    </Flex>
+                                )}
+                            </div>
+                        </Spin>
                     </Col>
                 </Row>
             </div>

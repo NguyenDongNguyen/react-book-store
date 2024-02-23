@@ -1,0 +1,26 @@
+.layout-admin {
+    .page-layout {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+
+        .admin-header {
+            height: 50px;
+            border-bottom: 1px solid #ebebeb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+        }
+
+        .admin-content {
+            flex-grow: 1 !important;
+        }
+
+        .admin-footer {
+            position: static;
+            line-height: 0;
+            margin: 10px 0;
+        }
+    }
+}

@@ -21,7 +21,7 @@ import "../../styles/global.scss";
 import ManageAccount from "../Account/ManageAccount";
 import HeadlessTippy from "@tippyjs/react/headless";
 import { useDispatch, useSelector } from "react-redux";
-import { getProductListRequest } from "../../redux/slicers/product.slice";
+import { getProductSuggestRequest } from "../../redux/slicers/product.slice";
 import { PRODUCT_LIMIT } from "../../constants/paging";
 import SearchItem from "./SearchItem";
 import { getCartListRequest } from "../../redux/slicers/cart.slice";
@@ -38,18 +38,14 @@ const Header = (props) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { productList } = useSelector((state) => state.product);
+    const { productSuggest } = useSelector((state) => state.product);
     const { cartList } = useSelector((state) => state.cart);
     const { userInfo } = useSelector((state) => state.auth);
 
     useEffect(() => {
         dispatch(
-            getProductListRequest({
+            getProductSuggestRequest({
                 keyword: searchTerm,
-                sort: "sold",
-                order: "desc",
-                page: 1,
-                limit: PRODUCT_LIMIT,
             })
         );
     }, [searchTerm]);
@@ -57,10 +53,10 @@ const Header = (props) => {
     useEffect(() => {
         dispatch(
             getCartListRequest({
-                userId: 1,
+                userId: userInfo?.data?.id,
             })
         );
-    }, []);
+    }, [cartList.data.length, dispatch, userInfo?.data?.id]);
 
     let items = [
         {
@@ -97,34 +93,47 @@ const Header = (props) => {
             key: "logout",
         },
     ];
+    if (userInfo?.data?.role === "ADMIN") {
+        items.unshift({
+            label: (
+                <Link to="/admin" style={{ cursor: "pointer" }}>
+                    Trang quản trị
+                </Link>
+            ),
+            key: "admin",
+        });
+    }
 
     const contentPopover = () => {
-        return (
-            <div className="pop-cart-body">
-                <div className="pop-cart-content">
-                    {cartList.data?.map((book, index) => {
-                        return (
-                            <div className="book" key={`book-${index}`}>
-                                <img
-                                    src={book.product.thumbnail}
-                                    alt="images book"
-                                />
-                                <div>{book.product.mainText}</div>
-                                <div className="price">
-                                    {new Intl.NumberFormat("vi-VN", {
-                                        style: "currency",
-                                        currency: "VND",
-                                    }).format(book?.product.price ?? 0)}
+        if (userInfo.data.id) {
+            return (
+                <div className="pop-cart-body">
+                    <div className="pop-cart-content">
+                        {cartList.data?.map((book, index) => {
+                            return (
+                                <div className="book" key={`book-${index}`}>
+                                    <img src={book?.thumbnail} alt="images book" />
+                                    <div>{book?.mainText}</div>
+                                    <div className="price">
+                                        {new Intl.NumberFormat("vi-VN", {
+                                            style: "currency",
+                                            currency: "VND",
+                                        }).format(book?.price ?? 0)}
+                                    </div>
                                 </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
+                    <div className="pop-cart-footer">
+                        <button onClick={() => navigate("/order")}>
+                            Xem giỏ hàng
+                        </button>
+                    </div>
                 </div>
-                <div className="pop-cart-footer">
-                    <button onClick={() => navigate("/order")}>Xem giỏ hàng</button>
-                </div>
-            </div>
-        );
+            );
+        } else {
+            return <></>;
+        }
     };
 
     return (
@@ -151,7 +160,7 @@ const Header = (props) => {
                                     visible={
                                         showResult &&
                                         searchTerm &&
-                                        productList.data.length > 0
+                                        productSuggest.data.length > 0
                                     }
                                     render={(attrs) => (
                                         <div
@@ -163,12 +172,14 @@ const Header = (props) => {
                                                 <h4 className="search-title">
                                                     Books
                                                 </h4>
-                                                {productList.data.map((result) => (
-                                                    <SearchItem
-                                                        key={result.id}
-                                                        data={result}
-                                                    />
-                                                ))}
+                                                {productSuggest.data.map(
+                                                    (result) => (
+                                                        <SearchItem
+                                                            key={result.id}
+                                                            data={result}
+                                                        />
+                                                    )
+                                                )}
                                             </div>
                                         </div>
                                     )}
@@ -205,7 +216,11 @@ const Header = (props) => {
                                     arrow={true}
                                 >
                                     <Badge
-                                        count={cartList?.data.length ?? 0}
+                                        count={
+                                            userInfo.data.id
+                                                ? cartList?.data.length
+                                                : 0
+                                        }
                                         size={"small"}
                                         showZero
                                     >
@@ -217,14 +232,21 @@ const Header = (props) => {
                                 <Divider type="vertical" />
                             </li>
                             <li className="navigation__item mobile">
-                                <Dropdown menu={{ items }} trigger={["click"]}>
-                                    <a onClick={(e) => e.preventDefault()}>
-                                        <Space>
-                                            {/* <Avatar src={urlAvatar} />  */}
-                                            {userInfo?.data?.fullName}
-                                        </Space>
-                                    </a>
-                                </Dropdown>
+                                {!userInfo.data.id ? (
+                                    <span onClick={() => navigate("/login")}>
+                                        {" "}
+                                        Tài Khoản
+                                    </span>
+                                ) : (
+                                    <Dropdown menu={{ items }} trigger={["click"]}>
+                                        <a onClick={(e) => e.preventDefault()}>
+                                            <Space>
+                                                {/* <Avatar src={urlAvatar} /> */}
+                                                {userInfo?.data?.fullName}
+                                            </Space>
+                                        </a>
+                                    </Dropdown>
+                                )}
                             </li>
                         </ul>
                     </nav>

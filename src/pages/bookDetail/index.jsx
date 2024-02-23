@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductDetailRequest } from "../../redux/slicers/product.slice";
 
 function BookPage() {
-    let location = useLocation()
+    let location = useLocation();
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
     // const { productDetail } = useSelector((state) => state.product)
 
     // const [dataBook, setDataBook] = useState('')
@@ -16,18 +16,16 @@ function BookPage() {
     const id = params.get("id"); // book id
 
     useEffect(() => {
-        fetchBook(id)
-    }, [id])
+        fetchBook(id);
+    }, [id]);
 
     const fetchBook = (id) => {
-        dispatch(getProductDetailRequest({ id: id }))
-    }
+        dispatch(getProductDetailRequest({ id: id }));
+    };
 
-    
-
-    return ( 
+    return (
         <>
-            <ViewDetail  />
+            <ViewDetail />
         </>
     );
 }

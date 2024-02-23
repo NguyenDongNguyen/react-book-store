@@ -32,7 +32,7 @@ function LoginPage() {
             loginRequest({
                 data: values,
                 callback: (role) => {
-                    role === "admin" ? navigate("/admin") : navigate("/");
+                    role === "ADMIN" ? navigate("/admin") : navigate("/");
                 },
             })
         );

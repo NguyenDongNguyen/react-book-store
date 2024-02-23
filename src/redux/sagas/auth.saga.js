@@ -11,6 +11,9 @@ import {
     getUserInfoRequest,
     getUserInfoSuccess,
     getUserInfoFail,
+    updateUserInfoRequest,
+    updateUserInfoSuccess,
+    updateUserInfoFail,
 } from "../slicers/auth.slice";
 import { notification } from "antd";
 
@@ -56,8 +59,23 @@ function* getUserInfo(action) {
     }
 }
 
+function* updateUserInfo(action) {
+    try {
+        const { id, data } = action.payload;
+        const result = yield axios.patch(`http://localhost:8080/users/${id}`, data);
+        yield put(updateUserInfoSuccess({ data: result.data }));
+        notification.success({
+            message: "Cập nhật thông tin thành công",
+        });
+    } catch (e) {
+        console.log(e);
+        yield put(updateUserInfoFail({ error: "Password is incorrect" }));
+    }
+}
+
 export default function* authSaga() {
     yield takeEvery(registerRequest, registerSaga);
     yield takeEvery(loginRequest, loginSaga);
     yield takeEvery(getUserInfoRequest, getUserInfo);
+    yield takeEvery(updateUserInfoRequest, updateUserInfo);
 }

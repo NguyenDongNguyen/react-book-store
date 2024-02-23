@@ -1,50 +1,72 @@
-import { Button, Col, Form, Input, Row, message, notification } from "antd"
+import { Button, Col, Form, Input, Row, message, notification } from "antd";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-// import { callUpdatePassword } from "../../services/api";
+import { useDispatch, useSelector } from "react-redux";
+import {
+    getUserInfoRequest,
+    updateUserInfoRequest,
+} from "../../redux/slicers/auth.slice";
+const bcrypt = require("bcryptjs");
 
 const ChangePassword = () => {
     const [form] = Form.useForm();
-    const [isSubmit, setIsSubmit] = useState(false)
-    // const {user} = useSelector(state => state.account)  
+    const dispatch = useDispatch();
+    const [isSubmit, setIsSubmit] = useState(false);
+    const { userInfo } = useSelector((state) => state.auth);
 
-    // const onFinish = async (values) => {
-    //     const { email, oldpass, newpass } = values
-    //     setIsSubmit(true)
-    //     const res = await callUpdatePassword(email, oldpass, newpass)
-    //     if (res && res.data) {
-    //         message.success('Cập nhật mật khẩu thành công')
-    //         form.setFieldValue('oldpass', '')
-    //         form.setFieldValue('newpass', '')
-    //     } else {
-    //         notification.error({
-    //             message: 'Đã có lỗi xảy ra',
-    //             description: res.message
-    //         })
-    //     }
-    //     setIsSubmit(false)
-    // }
+    // lấy thông tin user khi lần đầu tiên đăng nhập vào
+    useEffect(() => {
+        dispatch(getUserInfoRequest({ id: userInfo.data.id }));
+    }, []);
 
-    // useEffect(() => {
-    //     if (user) {
-    //         form.setFieldValue('email', user.email);
-    //     }
-    // }, []);
+    const onFinish = async (values) => {
+        const { id, oldpass, newpass } = values;
+        setIsSubmit(true);
+        const comparePassword = bcrypt.compareSync(oldpass, userInfo.data.password);
+        if (comparePassword) {
+            dispatch(
+                updateUserInfoRequest({
+                    id: id,
+                    data: {
+                        password: newpass,
+                    },
+                })
+            );
+            form.setFieldValue("oldpass", "");
+            form.setFieldValue("newpass", "");
+        } else {
+            form.setFields([
+                {
+                    name: "oldpass",
+                    errors: ["Password is incorrect"],
+                },
+            ]);
+        }
+        setIsSubmit(false);
+    };
+
+    useEffect(() => {
+        if (userInfo.data) {
+            form.setFieldsValue({
+                id: userInfo.data.id,
+                email: userInfo.data.email,
+            });
+        }
+    }, []);
 
     return (
-        <div style={{ minHeight: 400, marginLeft: 30}}>
+        <div style={{ minHeight: 400, marginLeft: 30 }}>
             <Row>
                 <Col sm={24} md={12}>
                     <Form
                         form={form}
                         name="changePassword"
                         layout="vertical"
-                        // onFinish={(values) => onFinish(values)}
+                        onFinish={(values) => onFinish(values)}
                     >
-                        <Form.Item
-                            label="Email"
-                            name="email"
-                        >
+                        <Form.Item label="Id" name="id" hidden>
+                            <Input placeholder="Id" disabled />
+                        </Form.Item>
+                        <Form.Item label="Email" name="email">
                             <Input placeholder="Email" disabled />
                         </Form.Item>
                         <Form.Item
@@ -80,7 +102,7 @@ const ChangePassword = () => {
                 </Col>
             </Row>
         </div>
-    )
-}
+    );
+};
 
-export default ChangePassword
+export default ChangePassword;

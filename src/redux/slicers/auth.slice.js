@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 const initialState = {
     userInfo: {
         data: {},
-        loading: false,
+        loading: true,
         error: null,
     },
     registerData: {
@@ -12,6 +12,10 @@ const initialState = {
         error: null,
     },
     loginData: {
+        loading: false,
+        error: null,
+    },
+    updateInfo: {
         loading: false,
         error: null,
     },
@@ -44,6 +48,7 @@ export const authSlice = createSlice({
             const { data } = action.payload;
             state.loginData.loading = false;
             state.userInfo.data = data;
+            state.userInfo.loading = false;
         },
         loginFail: (state, action) => {
             const { error } = action.payload;
@@ -72,6 +77,22 @@ export const authSlice = createSlice({
             state.userInfo.error = error;
             state.userInfo.loading = false;
         },
+
+        // update user info
+        updateUserInfoRequest: (state) => {
+            state.updateInfo.loading = true;
+            state.updateInfo.error = null;
+        },
+        updateUserInfoSuccess: (state, action) => {
+            const { data } = action.payload;
+            state.updateInfo.loading = false;
+            state.userInfo.data = data;
+        },
+        updateUserInfoFail: (state, action) => {
+            const { error } = action.payload;
+            state.updateInfo.error = error;
+            state.updateInfo.loading = false;
+        },
     },
 });
 
@@ -86,6 +107,9 @@ export const {
     getUserInfoRequest,
     getUserInfoSuccess,
     getUserInfoFail,
+    updateUserInfoRequest,
+    updateUserInfoSuccess,
+    updateUserInfoFail,
 } = authSlice.actions;
 
 export default authSlice.reducer;
