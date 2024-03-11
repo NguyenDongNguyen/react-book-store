@@ -1,8 +1,143 @@
 footer {
     position: static;
-    bottom: 0;
     width: 100%;
-    height: 50px;
-    text-align: center;
-    line-height: 50px;
+
+    .social-marketing {
+        background-color: #228b22;
+
+        .container {
+            padding: 10px 90px;
+
+            .social {
+                display: flex;
+                height: 80px;
+                justify-content: center;
+                align-items: center;
+
+                a {
+                    position: relative;
+                    margin-right: 20px;
+                    width: 36px;
+                    height: 36px;
+                    transition: all 0.3s;
+                }
+            }
+
+            .email-mkt {
+                height: 100%;
+                display: flex;
+                justify-content: end;
+                align-items: center;
+
+                h4 {
+                    font-size: 16px;
+                    color: #fff;
+                    text-align: right;
+                    display: flex;
+                    align-items: center;
+                    justify-content: end;
+                    height: 100%;
+                    padding-right: 30px;
+                    text-transform: uppercase;
+                    white-space: nowrap;
+                }
+
+                .mail {
+                    display: flex;
+                    align-items: center;
+                    width: 345px;
+                    flex-flow: wrap;
+                    overflow: hidden;
+
+                    form {
+                        position: relative;
+                        width: 100%;
+
+                        input {
+                            height: 38px;
+                            width: 345px;
+                            padding: 0 90px 0 15px;
+                            outline: none;
+                            border: 1px solid #ebebeb;
+                            font-size: 14px;
+                            margin: 0;
+                            min-height: 38px;
+                            border-radius: 3px;
+                            font-size: 14px;
+                        }
+
+                        button {
+                            position: absolute;
+                            right: 0;
+                            top: 0;
+                            border: initial;
+                            height: 40px;
+                            width: 84px;
+                            font-size: 14px;
+                            padding: 0 10px;
+                            background: #37cd37;
+                            color: #fff;
+                            font-family: var(--font-base-bold);
+                            border: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .information {
+        padding-top: 34px;
+        .container-info {
+            padding: 0 90px;
+
+            span {
+                font-size: 18px;
+                font-style: italic;
+                font-weight: 400;
+                line-height: 26px;
+                letter-spacing: 0em;
+                text-align: left;
+                color: #228b22;
+                display: inline-flex;
+                margin-left: 10px;
+            }
+
+            ul li {
+                display: flex;
+                margin-bottom: 15px;
+                align-items: center;
+                font-size: 15px;
+            }
+
+            ul li a {
+                color: #151515;
+                padding-left: 8px;
+            }
+
+            .title-menu {
+                text-transform: uppercase;
+                font-size: 16px;
+                margin-bottom: 20px;
+                color: #228b22;
+                padding-left: 8px;
+            }
+            .payment img {
+                width: auto !important;
+                height: unset !important;
+            }
+        }
+    }
+}
+
+.social-marketing .social a::before {
+    content: "";
+    width: 38px;
+    height: 38px;
+    border: solid 2px #fff;
+    opacity: 0.5;
+    position: absolute;
+    left: -3px;
+    top: -3px;
+    border-radius: 50%;
 }

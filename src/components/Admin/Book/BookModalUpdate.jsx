@@ -17,6 +17,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoryListRequest } from "../../../redux/slicers/category.slice";
 import { updateProductRequest } from "../../../redux/slicers/product.slice";
+import TextArea from "antd/es/input/TextArea";
+import { convertImageToBase64 } from "../../../utils/file";
 
 const BookModalUpdate = (props) => {
     const { openModalUpdate, setOpenModalUpdate, dataUpdate, setDataUpdate } = props;
@@ -41,16 +43,6 @@ const BookModalUpdate = (props) => {
     const [initForm, setInitForm] = useState(null);
 
     useEffect(() => {
-        // const fetchCategory = async () => {
-        //     const res = await callFetchCategory();
-        //     if (res && res.data) {
-        //         const d = res.data.map(item => {
-        //             return { label: item, value: item }
-        //         })
-        //         setListCategory(d);
-        //     }
-        // }
-        // fetchCategory();
         dispatch(getCategoryListRequest());
     }, []);
 
@@ -80,9 +72,10 @@ const BookModalUpdate = (props) => {
                 mainText: dataUpdate.mainText,
                 author: dataUpdate.author,
                 price: dataUpdate.price,
-                categoryId: dataUpdate.category.name,
+                categoryId: dataUpdate.category?.id,
                 quantity: dataUpdate.quantity,
                 sold: dataUpdate.sold,
+                content: dataUpdate.content,
                 thumbnail: { fileList: arrThumbnail },
                 slider: { fileList: arrSlider },
             };
@@ -100,7 +93,7 @@ const BookModalUpdate = (props) => {
     const renderCategoryOptions = useMemo(() => {
         return categoryList.data.map((item) => {
             return (
-                <Select.Option key={item.id} value={item.code}>
+                <Select.Option key={item.id} value={item.id}>
                     {item.name}
                 </Select.Option>
             );
@@ -108,25 +101,26 @@ const BookModalUpdate = (props) => {
     }, [categoryList.data]);
 
     const onFinish = async (values) => {
-        // if (dataThumbnail.length === 0) {
-        //     notification.error({
-        //         message: "Lỗi validate",
-        //         description: "Vui lòng upload ảnh thumbnail",
-        //     });
-        //     return;
-        // }
+        if (dataThumbnail.length === 0) {
+            notification.error({
+                message: "Lỗi validate",
+                description: "Vui lòng upload ảnh thumbnail",
+            });
+            return;
+        }
 
-        // if (dataSlider.length === 0) {
-        //     notification.error({
-        //         message: "Lỗi validate",
-        //         description: "Vui lòng upload ảnh slider",
-        //     });
-        //     return;
-        // }
+        if (dataSlider.length === 0) {
+            notification.error({
+                message: "Lỗi validate",
+                description: "Vui lòng upload ảnh slider",
+            });
+            return;
+        }
 
-        const { id, mainText, author, price, sold, quantity, categoryId } = values;
-        // const thumbnail = dataThumbnail[0].name;
-        // const slider = dataSlider.map((item) => item.name);
+        const { id, mainText, author, price, sold, quantity, content, categoryId } =
+            values;
+        const thumbnail = dataThumbnail[0].name;
+        const slider = dataSlider.map((item) => item.name);
 
         setIsSubmit(true);
         // const res = await callUpdateBook(_id, thumbnail, slider, mainText, author, price, sold, quantity, category);
@@ -154,6 +148,9 @@ const BookModalUpdate = (props) => {
                     price,
                     sold,
                     quantity,
+                    content,
+                    thumbnail,
+                    slider,
                     categoryId: values.categoryId,
                 },
             })
@@ -200,30 +197,35 @@ const BookModalUpdate = (props) => {
     };
 
     const handleUploadFileThumbnail = async ({ file, onSuccess, onError }) => {
-        // const res = await callUploadBookImg(file);
-        // if (res && res.data) {
-        //     setDataThumbnail([{
-        //         name: res.data.fileUploaded,
-        //         uid: file.uid
-        //     }])
-        //     onSuccess('ok')
-        // } else {
-        //     onError('Đã có lỗi khi upload file');
-        // }
+        const imgBase64 = await convertImageToBase64(file);
+        if (imgBase64) {
+            setDataThumbnail([
+                {
+                    name: imgBase64,
+                    uid: file.uid,
+                },
+            ]);
+            onSuccess("ok");
+        } else {
+            onError("Đã có lỗi khi upload file");
+        }
     };
 
     const handleUploadFileSlider = async ({ file, onSuccess, onError }) => {
-        // const res = await callUploadBookImg(file);
-        // if (res && res.data) {
-        //     //copy previous state => upload multiple images
-        //     setDataSlider((dataSlider) => [...dataSlider, {
-        //         name: res.data.fileUploaded,
-        //         uid: file.uid
-        //     }])
-        //     onSuccess('ok')
-        // } else {
-        //     onError('Đã có lỗi khi upload file');
-        // }
+        const imgBase64 = await convertImageToBase64(file);
+        if (imgBase64) {
+            //copy previous state => upload multiple images
+            setDataSlider((dataSlider) => [
+                ...dataSlider,
+                {
+                    name: imgBase64,
+                    uid: file.uid,
+                },
+            ]);
+            onSuccess("ok");
+        } else {
+            onError("Đã có lỗi khi upload file");
+        }
     };
 
     const handleRemoveFile = (file, type) => {
@@ -396,6 +398,25 @@ const BookModalUpdate = (props) => {
                                 <InputNumber
                                     min={0}
                                     defaultValue={0}
+                                    style={{ width: "100%" }}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                label="Thông tin sản phẩm"
+                                name="content"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng nhập thông tin!",
+                                    },
+                                ]}
+                            >
+                                <TextArea
+                                    allowClear
+                                    rows={4}
                                     style={{ width: "100%" }}
                                 />
                             </Form.Item>

@@ -1,5 +1,11 @@
+import OrderTable from "../../components/Admin/Order/OrderTable";
+
 const ManageOrderPage = () => {
-    return <div>Manage order page</div>;
+    return (
+        <div>
+            <OrderTable />
+        </div>
+    );
 };
 
 export default ManageOrderPage;

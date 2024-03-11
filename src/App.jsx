@@ -1,6 +1,11 @@
 import "./styles/reset.scss";
 import React, { useEffect, useState } from "react";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import {
+    createBrowserRouter,
+    Outlet,
+    RouterProvider,
+    useLocation,
+} from "react-router-dom";
 import LoginPage from "./pages/login";
 // import ContactPage from './pages/contact';
 import BookDetailPage from "./pages/bookDetail";
@@ -15,12 +20,25 @@ import LayoutAdmin from "./components/Admin/LayoutAdmin";
 import ManageUser from "./pages/manageUser";
 import ManageBookPage from "./pages/manageBook";
 import OrderPage from "./pages/order";
-import HistoryPage from "./components/Order/History";
+import HistoryPage from "./components/History";
 import ManageOrderPage from "./pages/manageOrder";
 import { jwtDecode } from "jwt-decode";
 import { getUserInfoRequest } from "./redux/slicers/auth.slice";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/vi";
+import ProductList from "./components/ProductList";
+
+dayjs.locale("vi");
+dayjs.extend(relativeTime);
 
 const Layout = () => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
     return (
         <div className="layout-app">
             <Header />
@@ -30,7 +48,7 @@ const Layout = () => {
     );
 };
 
-export default function App() {
+const App = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -52,10 +70,10 @@ export default function App() {
             errorElement: <NotFound />,
             children: [
                 { index: true, element: <Home /> },
-                // {
-                //   path: "contact",
-                //   element: <ContactPage />,
-                // },
+                {
+                    path: "product",
+                    element: <ProductList />,
+                },
                 {
                     path: "book/:slug",
                     element: <BookDetailPage />,
@@ -108,4 +126,6 @@ export default function App() {
             <RouterProvider router={router} />
         </>
     );
-}
+};
+
+export default App;

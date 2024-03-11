@@ -17,6 +17,8 @@ import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoryListRequest } from "../../../redux/slicers/category.slice";
 import { createProductRequest } from "../../../redux/slicers/product.slice";
+import TextArea from "antd/es/input/TextArea";
+import { convertImageToBase64 } from "../../../utils/file";
 
 const BookModalCreate = (props) => {
     const { openModalCreate, setOpenModalCreate } = props;
@@ -24,7 +26,6 @@ const BookModalCreate = (props) => {
 
     const dispatch = useDispatch();
     const { categoryList } = useSelector((state) => state.category);
-    const [listCategory, setListCategory] = useState([]);
     const [form] = Form.useForm();
 
     const [loading, setLoading] = useState(false);
@@ -54,46 +55,34 @@ const BookModalCreate = (props) => {
     }, [categoryList.data]);
 
     const onFinish = async (values) => {
-        // if (dataThumbnail.length === 0) {
-        //     notification.error({
-        //         message: "Lỗi validate",
-        //         description: "Vui lòng upload ảnh thumbnail",
-        //     });
-        //     return;
-        // }
+        if (dataThumbnail.length === 0) {
+            notification.error({
+                message: "Lỗi validate",
+                description: "Vui lòng upload ảnh thumbnail",
+            });
+            return;
+        }
 
-        // if (dataSlider.length === 0) {
-        //     notification.error({
-        //         message: "Lỗi validate",
-        //         description: "Vui lòng upload ảnh slider",
-        //     });
-        //     return;
-        // }
+        if (dataSlider.length === 0) {
+            notification.error({
+                message: "Lỗi validate",
+                description: "Vui lòng upload ảnh slider",
+            });
+            return;
+        }
 
         // const { mainText, author, price, sold, quantity, category } = values;
-        // const thumbnail = dataThumbnail[0].name;
-        // const slider = dataSlider.map((item) => item.name);
+        const thumbnail = dataThumbnail[0].name;
+        const slider = dataSlider.map((item) => item.name);
 
         setIsSubmit(true);
-        // const res = await callCreateABook(thumbnail, slider, mainText, author, price, sold, quantity, category);
-        // if (res && res.data) {
-        //     message.success('Tạo mới book thành công');
-        //     form.resetFields();
-        //     setDataSlider([])
-        //     setDataThumbnail([])
-        //     setOpenModalCreate(false);
-        //     await props.fetchBook()
-        // } else {
-        //     notification.error({
-        //         message: 'Đã có lỗi xảy ra',
-        //         description: res.message
-        //     })
-        // }
 
         dispatch(
             createProductRequest({
                 data: {
                     ...values,
+                    thumbnail,
+                    slider,
                 },
             })
         );
@@ -137,30 +126,35 @@ const BookModalCreate = (props) => {
     };
 
     const handleUploadFileThumbnail = async ({ file, onSuccess, onError }) => {
-        // const res = await callUploadBookImg(file);
-        // if (res && res.data) {
-        //     setDataThumbnail([{
-        //         name: res.data.fileUploaded,
-        //         uid: file.uid
-        //     }])
-        //     onSuccess('ok')
-        // } else {
-        //     onError('Đã có lỗi khi upload file');
-        // }
+        const imgBase64 = await convertImageToBase64(file);
+        if (imgBase64) {
+            setDataThumbnail([
+                {
+                    name: imgBase64,
+                    uid: file.uid,
+                },
+            ]);
+            onSuccess("ok");
+        } else {
+            onError("Đã có lỗi khi upload file");
+        }
     };
 
     const handleUploadFileSlider = async ({ file, onSuccess, onError }) => {
-        // const res = await callUploadBookImg(file);
-        // if (res && res.data) {
-        //     //copy previous state => upload multiple images
-        //     setDataSlider((dataSlider) => [...dataSlider, {
-        //         name: res.data.fileUploaded,
-        //         uid: file.uid
-        //     }])
-        //     onSuccess('ok')
-        // } else {
-        //     onError('Đã có lỗi khi upload file');
-        // }
+        const imgBase64 = await convertImageToBase64(file);
+        if (imgBase64) {
+            //copy previous state => upload multiple images
+            setDataSlider((dataSlider) => [
+                ...dataSlider,
+                {
+                    name: imgBase64,
+                    uid: file.uid,
+                },
+            ]);
+            onSuccess("ok");
+        } else {
+            onError("Đã có lỗi khi upload file");
+        }
     };
 
     const handleRemoveFile = (file, type) => {
@@ -314,6 +308,25 @@ const BookModalCreate = (props) => {
                                 <InputNumber
                                     min={0}
                                     defaultValue={0}
+                                    style={{ width: "100%" }}
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item
+                                labelCol={{ span: 24 }}
+                                label="Thông tin sản phẩm"
+                                name="content"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: "Vui lòng nhập thông tin!",
+                                    },
+                                ]}
+                            >
+                                <TextArea
+                                    allowClear
+                                    rows={4}
                                     style={{ width: "100%" }}
                                 />
                             </Form.Item>

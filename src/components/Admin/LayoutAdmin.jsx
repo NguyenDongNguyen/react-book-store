@@ -103,6 +103,7 @@ const LayoutAdmin = () => {
     const accessToken = localStorage.getItem("accessToken");
 
     if (accessToken && userInfo.loading) {
+        console.log("aloooooo");
         return <Loading />;
     } else if (userInfo.data.role !== "ADMIN") {
         return <NotPermitted />;

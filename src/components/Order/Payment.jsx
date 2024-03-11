@@ -97,6 +97,7 @@ const Payment = (props) => {
                     wardName: wardData?.name,
                     totalPrice: totalPrice,
                     userId: user?.id,
+                    stateId: 1,
                 },
                 cartList: carts,
                 callback: () => props.setCurrentStep(2),

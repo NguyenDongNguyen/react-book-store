@@ -1,28 +1,49 @@
 .header-container {
+    border-bottom: 2px solid #228b22;
     .page-header {
         display: flex;
         user-select: none;
         -moz-user-select: none;
         -webkit-user-select: none;
-        height: 55px;
+        height: 65px;
         color: #808089;
         width: 100%;
-        max-width: 1440px;
+        max-width: 1350px;
         margin: 0 auto;
-        line-height: 55px;
+        line-height: 65px;
 
         &__top {
             display: flex;
-            width: 70%;
+            width: 80%;
             padding: 0 30px;
         }
 
         &__bottom {
             display: flex;
+            white-space: nowrap;
         }
 
         &__toggle {
             display: none;
+        }
+
+        .navbar {
+            ul {
+                list-style: none;
+                display: flex;
+                white-space: nowrap;
+            }
+            li a {
+                display: block;
+                padding: 0px 25px;
+                color: #151515;
+                font-size: 16px;
+                font-weight: bold;
+                text-decoration: none;
+            }
+            li a:active {
+                color: #23a421;
+            }
         }
 
         .page-header__top {
@@ -35,10 +56,11 @@
         }
 
         .logo {
-            color: #61dafb;
+            color: #228b22;
             cursor: pointer;
             display: block;
             width: 35%;
+            white-space: nowrap;
 
             .icon-react {
                 font-size: 30px;
@@ -102,20 +124,20 @@
         }
 
         .ant-btn {
-            background-color: #61dafb;
+            background-color: #228b22;
         }
 
         .ant-input-affix-wrapper {
             &:focus {
-                border-color: #61dafb !important;
+                border-color: #228b22 !important;
             }
             &:hover {
-                border-color: #61dafb !important;
+                border-color: #228b22 !important;
             }
         }
 
         .input-search {
-            width: 100%;
+            width: 94%;
             height: 25px;
             outline: none;
             padding: 5px 10px;
@@ -145,7 +167,7 @@
             font-size: 20px;
             top: 5px;
             position: relative;
-            color: #61dafb;
+            color: #228b22;
         }
     }
 
@@ -153,7 +175,8 @@
         .page-header {
             display: flex;
 
-            .logo {
+            .logo,
+            .navbar {
                 display: none;
             }
 
@@ -183,9 +206,9 @@
                     opacity: 1;
                 }
 
-                &.mobile {
-                    display: none;
-                }
+                // &.mobile {
+                //     display: none;
+                // }
             }
         }
     }

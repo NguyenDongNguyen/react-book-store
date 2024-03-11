@@ -20,6 +20,8 @@ import { Link } from "react-router-dom";
 import "../../styles/global.scss";
 import ManageAccount from "../Account/ManageAccount";
 import HeadlessTippy from "@tippyjs/react/headless";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import "react-perfect-scrollbar/dist/css/styles.css";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductSuggestRequest } from "../../redux/slicers/product.slice";
 import { PRODUCT_LIMIT } from "../../constants/paging";
@@ -125,7 +127,12 @@ const Header = (props) => {
                         })}
                     </div>
                     <div className="pop-cart-footer">
-                        <button onClick={() => navigate("/order")}>
+                        <button
+                            onClick={() => navigate("/order")}
+                            style={{
+                                backgroundColor: "#228b22",
+                            }}
+                        >
                             Xem giỏ hàng
                         </button>
                     </div>
@@ -154,6 +161,25 @@ const Header = (props) => {
                                 <FaReact className="rotate icon-react" /> Book Store
                                 {/* <VscSearchFuzzy className="icon-search" /> */}
                             </span>
+                            <div className="navbar">
+                                <ul>
+                                    <li>
+                                        <Link to={"/"}>Trang chủ</Link>
+                                    </li>
+                                    <li>
+                                        <a href="#">Tin Sách</a>
+                                    </li>
+                                    <li>
+                                        <Link to={"/product"}>Kho Sách</Link>
+                                    </li>
+                                    <li>
+                                        <a href="#">Tác giả</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Liên hệ</a>
+                                    </li>
+                                </ul>
+                            </div>
                             <div style={{ width: "100%", position: "relative" }}>
                                 <HeadlessTippy
                                     interactive
@@ -162,35 +188,38 @@ const Header = (props) => {
                                         searchTerm &&
                                         productSuggest.data.length > 0
                                     }
+                                    // visible={true}
                                     render={(attrs) => (
-                                        <div
-                                            className="search-result"
-                                            tabIndex="-1"
-                                            {...attrs}
+                                        <PerfectScrollbar
+                                            style={{
+                                                maxHeight: "400px",
+                                                backgroundColor:
+                                                    "rgb(255, 255, 255)",
+                                            }}
                                         >
-                                            <div className="wrapper">
-                                                <h4 className="search-title">
-                                                    Books
-                                                </h4>
-                                                {productSuggest.data.map(
-                                                    (result) => (
-                                                        <SearchItem
-                                                            key={result.id}
-                                                            data={result}
-                                                        />
-                                                    )
-                                                )}
+                                            <div
+                                                className="search-result"
+                                                tabIndex="-1"
+                                                {...attrs}
+                                            >
+                                                <div className="wrapper">
+                                                    <h4 className="search-title">
+                                                        Books
+                                                    </h4>
+                                                    {productSuggest.data.map(
+                                                        (result) => (
+                                                            <SearchItem
+                                                                key={result.id}
+                                                                data={result}
+                                                            />
+                                                        )
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
+                                        </PerfectScrollbar>
                                     )}
                                     onClickOutside={() => setShowResult(false)}
                                 >
-                                    {/* <Search
-                                        placeholder="input search loading with enterButton"
-                                        enterButton
-                                        color="#61dafb"
-                                        allowClear
-                                    /> */}
                                     <input
                                         className="input-search"
                                         type={"text"}
@@ -241,7 +270,9 @@ const Header = (props) => {
                                     <Dropdown menu={{ items }} trigger={["click"]}>
                                         <a onClick={(e) => e.preventDefault()}>
                                             <Space>
-                                                {/* <Avatar src={urlAvatar} /> */}
+                                                <Avatar
+                                                    src={userInfo?.data?.avatar}
+                                                />
                                                 {userInfo?.data?.fullName}
                                             </Space>
                                         </a>
@@ -258,41 +289,35 @@ const Header = (props) => {
                 onClose={() => setOpenDrawer(false)}
                 open={openDrawer}
             >
-                <p>Trang quản trị</p>
+                <p
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                        navigate("/");
+                        setOpenDrawer(false);
+                    }}
+                >
+                    Trang chủ
+                </p>
+                <Divider />
+
+                <p style={{ cursor: "pointer" }}>Tin Sách</p>
                 <Divider />
 
                 <p
                     style={{ cursor: "pointer" }}
                     onClick={() => {
-                        setIsModalOpen(true);
+                        navigate("/product");
                         setOpenDrawer(false);
                     }}
                 >
-                    Quản lý tài khoản
+                    Kho sách
                 </p>
                 <Divider />
 
-                <p
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                        navigate("/history");
-                        setOpenDrawer(false);
-                    }}
-                >
-                    Lịch sử mua hàng
-                </p>
+                <p style={{ cursor: "pointer" }}>Tác giả</p>
                 <Divider />
 
-                <p
-                    style={{ cursor: "pointer" }}
-                    onClick={() => {
-                        dispatch(logoutRequest());
-                        setOpenDrawer(false);
-                    }}
-                >
-                    Đăng xuất
-                </p>
-                <Divider />
+                <p style={{ cursor: "pointer" }}>Liên hệ</p>
             </Drawer>
             <ManageAccount
                 isModalOpen={isModalOpen}

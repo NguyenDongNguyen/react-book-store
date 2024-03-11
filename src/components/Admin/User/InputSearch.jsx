@@ -1,40 +1,45 @@
-import React, { useState } from 'react';
-import { Button, Col, Form, Input, Row, theme } from 'antd';
+import React, { useState } from "react";
+import { Button, Col, Form, Input, Row, theme } from "antd";
 
-const AdvancedSearchForm = ({handleSearch}) => {
+const AdvancedSearchForm = ({ handleSearch }) => {
     const { token } = theme.useToken();
     const [form] = Form.useForm();
 
     const formStyle = {
-        maxWidth: 'none',
+        maxWidth: "none",
         background: token.colorFillAlter,
         borderRadius: token.borderRadiusLG,
         padding: 24,
     };
 
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
-        let query = ''
+        console.log("Received values of form: ", values);
+        let query = "";
         //build query
         if (values.fullName) {
-            query += `&fullName=/${values.fullName}/i`
+            query = values.fullName;
         }
 
         if (values.email) {
-            query += `&email=/${values.email}/i`
+            query = values.email;
         }
 
         if (values.phone) {
-            query += `&phone=/${values.phone}/i`
+            query = values.phone;
         }
 
         if (query) {
-            handleSearch(query)
+            handleSearch(query);
         }
     };
 
     return (
-        <Form form={form} name="advanced_search" style={formStyle} onFinish={onFinish}>
+        <Form
+            form={form}
+            name="advanced_search"
+            style={formStyle}
+            onFinish={onFinish}
+        >
             <Row gutter={24}>
                 <Col span={8}>
                     <Form.Item
@@ -66,12 +71,12 @@ const AdvancedSearchForm = ({handleSearch}) => {
                 </Col>
             </Row>
             <Row>
-                <Col span={24} style={{ textAlign: 'right' }}>
+                <Col span={24} style={{ textAlign: "right" }}>
                     <Button type="primary" htmlType="submit">
                         Search
                     </Button>
                     <Button
-                        style={{ margin: '0 8px' }}
+                        style={{ margin: "0 8px" }}
                         onClick={() => {
                             form.resetFields();
                         }}
@@ -94,7 +99,7 @@ const AdvancedSearchForm = ({handleSearch}) => {
 
 // https://stackblitz.com/run?file=demo.tsx
 // https://ant.design/components/form
-const InputSearch = ({handleSearch}) => {
+const InputSearch = ({ handleSearch }) => {
     return (
         <div>
             <AdvancedSearchForm handleSearch={handleSearch} />

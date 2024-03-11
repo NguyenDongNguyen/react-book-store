@@ -49,14 +49,6 @@ const BookTable = () => {
         sort: "updatedAt",
         order: "desc",
     });
-    const [listBook, setListBook] = useState([]);
-    const [current, setCurrent] = useState(1);
-    const [pageSize, setPageSize] = useState(2);
-    const [total, setTotal] = useState(0);
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [filter, setFilter] = useState("");
-    const [sortQuery, setSortQuery] = useState("&sort=-updatedAt");
 
     const [openModalCreate, setOpenModalCreate] = useState(false);
     const [openModalImport, setOpenModalImport] = useState(false);
@@ -184,16 +176,6 @@ const BookTable = () => {
     };
 
     const handleDeleteBook = async (bookId) => {
-        // const res = await callDeleteBook(bookId)
-        // if (res && res.data) {
-        //     message.success('Xoá book thành công')
-        //     fetchBook()
-        // } else {
-        //     notification.error({
-        //         message: 'Đã có lỗi xảy ra',
-        //         description: res.message
-        //     })
-        // }
         dispatch(deleteProductRequest({ id: bookId }));
         fetchBook();
     };

@@ -34,7 +34,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-
         }
     }
 
@@ -59,10 +58,10 @@
 
         button {
             margin-top: 15px;
-            background-color: #ee4d2d;
+            background-color: #228b22;
             color: #fff;
-            border: 1px solid #ee4d2d;
-            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, .03);
+            border: 1px solid #228b22;
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.03);
             cursor: pointer;
             border-radius: 3px;
             font-size: 16px;
@@ -70,8 +69,7 @@
             padding: 0 20px;
 
             &:hover {
-                background-color: #e45b3f;
-
+                background-color: #279b27;
             }
         }
     }

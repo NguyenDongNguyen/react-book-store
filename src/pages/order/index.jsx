@@ -1,10 +1,10 @@
 import "./order.scss";
-import { Button, Result, Steps } from "antd";
+import { Breadcrumb, Button, Result, Space, Steps } from "antd";
 import { useState } from "react";
 import ViewOrder from "../../components/Order/ViewOrder";
 import Payment from "../../components/Order/Payment";
-import { SmileOutlined } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
+import { HomeOutlined, SmileOutlined } from "@ant-design/icons";
+import { Link, useNavigate } from "react-router-dom";
 
 const OrderPage = (props) => {
     const navigate = useNavigate();
@@ -16,6 +16,24 @@ const OrderPage = (props) => {
                 className="order-container"
                 style={{ maxWidth: 1440, margin: "0 auto" }}
             >
+                <Breadcrumb
+                    style={{ paddingBottom: "10px" }}
+                    items={[
+                        {
+                            title: (
+                                <Link to={"/"}>
+                                    <Space>
+                                        <HomeOutlined />
+                                        <span>Trang chủ</span>
+                                    </Space>
+                                </Link>
+                            ),
+                        },
+                        {
+                            title: "Giỏ hàng",
+                        },
+                    ]}
+                />
                 <div className="order-steps">
                     <Steps
                         size="small"

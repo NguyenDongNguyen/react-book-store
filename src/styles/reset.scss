@@ -8,6 +8,7 @@
 
 body {
     overflow-x: hidden;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 h1,
@@ -16,9 +17,12 @@ h3,
 h4,
 h5,
 h6,
-p {
+p,
+ul,
+li {
     margin: 0;
     padding: 0;
+    list-style: none;
 }
 
 img {

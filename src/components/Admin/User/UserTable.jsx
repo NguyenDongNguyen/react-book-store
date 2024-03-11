@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Table, Row, Col, Button, Popconfirm, message, notification } from "antd";
+import {
+    Table,
+    Row,
+    Col,
+    Button,
+    Popconfirm,
+    message,
+    notification,
+    Pagination,
+} from "antd";
 import InputSearch from "./InputSearch";
-// import { callDeleteUser, callFetchListUser } from "../../../services/api";
 import {
     CloudUploadOutlined,
     DeleteTwoTone,
@@ -10,16 +18,34 @@ import {
     PlusOutlined,
     ReloadOutlined,
 } from "@ant-design/icons";
-// import UserViewDetail from "./UserViewDetail";
-// import UserModalCreate from "./UserModalCreate";
+import UserViewDetail from "./UserViewDetail";
+import UserModalCreate from "./UserModalCreate";
 // import UserImport from "./data/UserImport";
 import * as XLSX from "xlsx";
-// import UserModalUpdate from "./UserModalUpdate";
-import { useSelector } from "react-redux";
+import moment from "moment";
+import { ADMIN_TABLE_LIMIT } from "../../../constants/paging";
+import UserModalUpdate from "./UserModalUpdate";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import {
+    deleteUserRequest,
+    getUserListRequest,
+} from "../../../redux/slicers/auth.slice";
 
 // https://stackblitz.com/run?file=demo.tsx
 const UserTable = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { userList } = useSelector((state) => state.auth);
     const { userInfo } = useSelector((state) => state.auth);
+    console.log("🚀 ~ UserTable ~ userInfo:", userInfo);
+
+    const [filterParams, setFilterParams] = useState({
+        categoryId: [],
+        keyword: "",
+        sort: "updatedAt",
+        order: "asc",
+    });
 
     const [listUser, setListUser] = useState([]);
     const [current, setCurrent] = useState(1);
@@ -39,7 +65,7 @@ const UserTable = () => {
     const columns = [
         {
             title: "Id",
-            dataIndex: "_id",
+            dataIndex: "id",
             render: (text, record, index) => {
                 return (
                     <a
@@ -49,7 +75,7 @@ const UserTable = () => {
                             setOpenViewDetail(true);
                         }}
                     >
-                        {record._id}
+                        {record.id}
                     </a>
                 );
             },
@@ -71,8 +97,11 @@ const UserTable = () => {
         },
         {
             title: "Ngày cập nhật",
-            dataIndex: "createdAt",
+            dataIndex: "updatedAt",
             sorter: true,
+            render: (text, record, index) => {
+                return <>{moment(record.updatedAt).format("DD-MM-YYYY HH:mm:ss")}</>;
+            },
         },
         {
             title: "Action",
@@ -81,9 +110,9 @@ const UserTable = () => {
                     <>
                         <Popconfirm
                             placement="leftTop"
-                            title={"Xác nhận xoá user"}
-                            description={"Bạn có chắn muốn xoá user này ?"}
-                            onConfirm={() => handleDeleteUser(record._id)}
+                            title={"Xác nhận khoá user"}
+                            description={"Bạn có chắn muốn khoá user này ?"}
+                            onConfirm={() => handleDeleteUser(record.id)}
                             okText="Xác nhận"
                             cancelText="Huỷ"
                         >
@@ -109,56 +138,51 @@ const UserTable = () => {
 
     useEffect(() => {
         fetchUser();
-    }, [current, pageSize, filter, sortQuery]);
+    }, []);
 
     const fetchUser = async () => {
-        // setIsLoading(true)
-        // let query = `current=${current}&pageSize=${pageSize}`
-        // if (filter) {
-        //     query += filter
-        // }
-        // if (sortQuery) {
-        //     query += sortQuery
-        // }
-        // const res = await callFetchListUser(query)
-        // if (res && res.data) {
-        //     setListUser(res.data.result)
-        //     setTotal(res.data.meta.total)
-        // }
-        // setIsLoading(false)
+        setIsLoading(true);
+        dispatch(
+            getUserListRequest({
+                ...filterParams,
+                page: 1,
+                limit: ADMIN_TABLE_LIMIT,
+            })
+        );
+        setIsLoading(false);
+    };
+
+    const handleChangePage = (page) => {
+        dispatch(
+            getUserListRequest({
+                ...filterParams,
+                page: page,
+                limit: ADMIN_TABLE_LIMIT,
+            })
+        );
     };
 
     const onChange = (pagination, filters, sorter, extra) => {
-        console.log("params", pagination, filters, sorter, extra);
-        if (pagination && pagination.current !== current) {
-            setCurrent(pagination.current);
-        }
-
-        if (pagination && pagination.pageSize !== pageSize) {
-            setPageSize(pagination.pageSize);
-            setCurrent(1);
-        }
-
         if (sorter && sorter.field) {
-            const q =
-                sorter.order === "ascend"
-                    ? `&sort=${sorter.field}`
-                    : `&sort=-${sorter.field}`;
-            setSortQuery(q);
+            dispatch(
+                getUserListRequest({
+                    ...filterParams,
+                    page: 1,
+                    limit: ADMIN_TABLE_LIMIT,
+                    sort: sorter.field,
+                    order: sorter.order === "ascend" ? "asc" : "desc",
+                })
+            );
         }
     };
 
     const handleDeleteUser = async (userId) => {
-        // const res = await callDeleteUser(userId)
-        // if (res && res.data) {
-        //     message.success('Xoá user thành công')
-        //     fetchUser()
-        // } else {
-        //     notification.error({
-        //         message: 'Đã có lỗi xảy ra',
-        //         description: res.message
-        //     })
-        // }
+        if (userInfo.data.id === userId) {
+            message.error("Không thể thực hiện thao tác này");
+            return;
+        }
+        dispatch(deleteUserRequest({ id: userId }));
+        fetchUser();
     };
 
     const renderHeader = () => {
@@ -193,8 +217,7 @@ const UserTable = () => {
                     <Button
                         type="ghost"
                         onClick={() => {
-                            setFilter("");
-                            setSortQuery("");
+                            fetchUser();
                         }}
                     >
                         <ReloadOutlined />
@@ -205,8 +228,15 @@ const UserTable = () => {
     };
 
     const handleSearch = (query) => {
-        setCurrent(1);
-        setFilter(query);
+        console.log("okeee");
+        dispatch(
+            getUserListRequest({
+                ...filterParams,
+                page: 1,
+                limit: ADMIN_TABLE_LIMIT,
+                keyword: query,
+            })
+        );
     };
 
     const handleExportData = () => {
@@ -229,34 +259,38 @@ const UserTable = () => {
                     <Table
                         title={renderHeader}
                         className="def"
-                        loading={isLoading}
+                        loading={userList.loading}
                         columns={columns}
-                        dataSource={listUser}
+                        dataSource={userList.data}
                         onChange={onChange}
                         rowKey="_id"
-                        pagination={{
-                            current: current,
-                            pageSize: pageSize,
-                            showSizeChanger: true,
-                            total: total,
-                            showTotal: (total, range) => {
-                                return (
-                                    <div>
-                                        {" "}
-                                        {range[0]}-{range[1]} trên {total} rows
-                                    </div>
-                                );
-                            },
-                        }}
+                        pagination={false}
                     />
                 </Col>
             </Row>
+            <Row justify={"center"}>
+                <Pagination
+                    current={userList.meta.page}
+                    pageSize={ADMIN_TABLE_LIMIT}
+                    total={userList.meta.total}
+                    onChange={(page) => handleChangePage(page)}
+                    showTotal={(total, range) => {
+                        return (
+                            <div>
+                                {" "}
+                                {range[0]}-{range[1]} trên {userList.meta.total} rows
+                            </div>
+                        );
+                    }}
+                    style={{ margin: "16px auto 0" }}
+                />
+            </Row>
 
-            {/* <UserModalCreate
+            <UserModalCreate
                 openModalCreate={openModalCreate}
                 setOpenModalCreate={setOpenModalCreate}
                 fetchUser={fetchUser}
-            /> */}
+            />
 
             {/* <UserImport
                 openModalImport={openModalImport}
@@ -264,20 +298,20 @@ const UserTable = () => {
                 fetchUser={fetchUser}
             /> */}
 
-            {/* <UserViewDetail
+            <UserViewDetail
                 openViewDetail={openViewDetail}
                 setOpenViewDetail={setOpenViewDetail}
                 dataViewDetail={dataViewDetail}
                 setDataViewDetail={setDataViewDetail}
-            /> */}
+            />
 
-            {/* <UserModalUpdate
+            <UserModalUpdate
                 openModalUpdate={openModalUpdate}
                 setOpenModalUpdate={setOpenModalUpdate}
                 dataUpdate={dataUpdate}
                 setDataUpdate={setDataUpdate}
                 fetchUser={fetchUser}
-            /> */}
+            />
         </>
     );
 };

@@ -1,6 +1,9 @@
-
 .login-container {
-    background-color: #f0f2f5;
+    // background-color: #f0f2f5;
+    background-image: url("../../assets/background.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     min-height: 100vh;
     // box-sizing: border-box;
     display: flex;
@@ -12,8 +15,30 @@
         // min-width: 700px;
         padding: 15px 30px;
         border-radius: 10px;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+        background-color: rgba(56, 54, 54, 0.6);
+        // box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
         box-sizing: border-box;
+
+        .ant-input::placeholder {
+            color: #ffffff;
+        }
+
+        label {
+            color: #ffffff;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid #ffffff;
+            color: #ffffff;
+            width: 100%;
+            text-transform: uppercase;
+            transition: 0.25s ease-in-out;
+            cursor: pointer;
+
+            :hover {
+                background-color: transparent !important;
+            }
+        }
     }
 }

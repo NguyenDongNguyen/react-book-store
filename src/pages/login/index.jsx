@@ -41,7 +41,7 @@ function LoginPage() {
     return (
         <Row className="login-container">
             <Col xs={24} md={10} className="login-page">
-                <h1 style={{ textAlign: "center" }}>Đăng Nhập</h1>
+                <h1 style={{ textAlign: "center", color: "#ffffff" }}>Đăng Nhập</h1>
                 <Divider />
                 <Form
                     form={loginForm}
@@ -64,7 +64,13 @@ function LoginPage() {
                             },
                         ]}
                     >
-                        <Input placeholder="Email" />
+                        <Input
+                            placeholder="Email"
+                            style={{
+                                background: "transparent",
+                                color: "#ffffff",
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Password"
@@ -76,7 +82,13 @@ function LoginPage() {
                             },
                         ]}
                     >
-                        <Input.Password placeholder="Password" />
+                        <Input.Password
+                            placeholder="Password"
+                            style={{
+                                background: "transparent",
+                                color: "#ffffff",
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item style={{ display: "flex", justifyContent: "center" }}>
                         <Button
@@ -84,11 +96,11 @@ function LoginPage() {
                             htmlType="submit"
                             loading={loginData.loading}
                         >
-                            Login
+                            Đăng nhập
                         </Button>
                     </Form.Item>
-                    <Divider>Or</Divider>
-                    <p className="text text-normal">
+                    <Divider style={{ color: "#ffffff" }}>Hoặc</Divider>
+                    <p className="text text-normal" style={{ color: "#ffffff" }}>
                         Bạn chưa có tài khoản ?
                         <span>
                             <Link to="/register"> Đăng Ký </Link>

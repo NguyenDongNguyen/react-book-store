@@ -34,6 +34,7 @@ function RegisterPage() {
                     phone: phone,
                     role: "user",
                     birthday: null,
+                    avatar: null,
                 },
                 callback: () => navigate("/login"),
             })
@@ -43,7 +44,9 @@ function RegisterPage() {
     return (
         <Row className="register-container">
             <Col xs={24} md={10} className="register-page">
-                <h1 style={{ textAlign: "center" }}>Đăng Ký Người Dùng Mới</h1>
+                <h1 style={{ textAlign: "center", color: "#ffffff" }}>
+                    Đăng Ký Người Dùng Mới
+                </h1>
                 <Divider />
                 <Form
                     form={registerForm}
@@ -65,7 +68,13 @@ function RegisterPage() {
                             },
                         ]}
                     >
-                        <Input placeholder="Name" />
+                        <Input
+                            placeholder="Name"
+                            style={{
+                                background: "transparent",
+                                color: "#ffffff",
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Email"
@@ -79,7 +88,13 @@ function RegisterPage() {
                             },
                         ]}
                     >
-                        <Input placeholder="Email" />
+                        <Input
+                            placeholder="Email"
+                            style={{
+                                background: "transparent",
+                                color: "#ffffff",
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Password"
@@ -91,7 +106,13 @@ function RegisterPage() {
                             },
                         ]}
                     >
-                        <Input.Password placeholder="Password" />
+                        <Input.Password
+                            placeholder="Password"
+                            style={{
+                                background: "transparent",
+                                color: "#ffffff",
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Confirm password"
@@ -116,7 +137,13 @@ function RegisterPage() {
                             }),
                         ]}
                     >
-                        <Input.Password placeholder="Confirm password" />
+                        <Input.Password
+                            placeholder="Confirm password"
+                            style={{
+                                background: "transparent",
+                                color: "#ffffff",
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Phone"
@@ -130,7 +157,13 @@ function RegisterPage() {
                             },
                         ]}
                     >
-                        <Input placeholder="Phone number" />
+                        <Input
+                            placeholder="Phone number"
+                            style={{
+                                background: "transparent",
+                                color: "#ffffff",
+                            }}
+                        />
                     </Form.Item>
                     <Form.Item style={{ display: "flex", justifyContent: "center" }}>
                         <Button
@@ -141,7 +174,7 @@ function RegisterPage() {
                             Register
                         </Button>
                     </Form.Item>
-                    <p className="text text-normal">
+                    <p className="text text-normal" style={{ color: "#ffffff" }}>
                         Bạn đã có tài khoản ?
                         <span>
                             <Link to="/login"> Đăng Nhập </Link>

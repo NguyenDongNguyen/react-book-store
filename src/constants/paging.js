@@ -1,2 +1,2 @@
 export const PRODUCT_LIMIT = 5;
-export const ADMIN_TABLE_LIMIT = 3;
+export const ADMIN_TABLE_LIMIT = 5;

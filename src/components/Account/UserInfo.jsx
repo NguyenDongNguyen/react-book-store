@@ -3,6 +3,7 @@ import {
     Avatar,
     Button,
     Col,
+    DatePicker,
     Form,
     Input,
     Row,
@@ -13,13 +14,15 @@ import {
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserInfoRequest } from "../../redux/slicers/auth.slice";
+import { convertImageToBase64 } from "../../utils/file";
+import dayjs from "dayjs";
 
 const UserInfo = () => {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const { userInfo } = useSelector((state) => state.auth);
     // const {user, tempAvatar} = useSelector(state => state.account)
-    // const [userAvatar, setUserAvatar] = useState(user.avatar ?? '')
+    const [userAvatar, setUserAvatar] = useState(userInfo?.data?.avatar ?? null);
     const [isSubmmit, setIsSubmit] = useState(false);
 
     useEffect(() => {
@@ -29,29 +32,47 @@ const UserInfo = () => {
                 email: userInfo.data.email,
                 fullName: userInfo.data.fullName,
                 phone: userInfo.data.phone,
+                birthday: userInfo.data.birthday
+                    ? dayjs(userInfo.data.birthday)
+                    : undefined,
             });
         }
     }, []);
 
     // const urlAvatar = `${import.meta.env.VITE_BACKEND_URL}/images/avatar/${tempAvatar || user?.avatar}`
 
-    // const handleUploadAvatar = async ({ file, onSuccess, onError }) => {
-    //     const res = await callUpdateAvatar(file)
-    //     if (res && res.data) {
-    //         const newAvatar = res.data.fileUploaded
-    //         dispatch(doUploadAvatarAction({ avatar: newAvatar }))
-    //         setUserAvatar(newAvatar)
-    //         onSuccess('ok')
-    //     } else {
-    //         onError('Đã có lỗi khi upload file')
-    //     }
-    // }
+    const handleUploadAvatar = async ({ file, onSuccess, onError }) => {
+        // const res = await callUpdateAvatar(file)
+        // if (res && res.data) {
+        //     const newAvatar = res.data.fileUploaded
+        //     dispatch(doUploadAvatarAction({ avatar: newAvatar }))
+        //     setUserAvatar(newAvatar)
+        //     onSuccess('ok')
+        // } else {
+        //     onError('Đã có lỗi khi upload file')
+        // }
+        console.log(">>> check file: ", file);
+        if (!file) return;
+        if (!["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
+            return notification.error({ message: "File không đúng định dạng" });
+        }
+        const imgBase64 = await convertImageToBase64(file);
+        setUserAvatar(imgBase64);
+        // await dispatch(
+        //     updateUserInfoRequest({
+        //         id: userInfo.data.id,
+        //         data: {
+        //             avatar: imgBase64,
+        //         },
+        //     })
+        // );
+    };
 
     const propsUpload = {
         maxCount: 1,
         multiple: false,
         showUpLoadList: false,
-        // customRequest: handleUploadAvatar,
+        customRequest: handleUploadAvatar,
         onChange(info) {
             if (info.file.status === "uploading") {
             }
@@ -64,7 +85,7 @@ const UserInfo = () => {
     };
 
     const onFinish = async (values) => {
-        const { id, fullName, phone } = values;
+        const { id, fullName, phone, birthday } = values;
         setIsSubmit(true);
         dispatch(
             updateUserInfoRequest({
@@ -72,6 +93,8 @@ const UserInfo = () => {
                 data: {
                     fullName,
                     phone,
+                    birthday,
+                    avatar: userAvatar,
                 },
             })
         );
@@ -81,7 +104,7 @@ const UserInfo = () => {
     return (
         <div style={{ minHeight: 400 }}>
             <Row>
-                <Col sm={24} md={12}>
+                <Col sm={24} md={8}>
                     <Row gutter={[30, 30]}>
                         <Col span={24}>
                             <Avatar
@@ -94,7 +117,7 @@ const UserInfo = () => {
                                     xxl: 200,
                                 }}
                                 icon={<AntDesignOutlined />}
-                                // src={urlAvatar}
+                                src={userAvatar}
                                 shape="circle"
                             />
                         </Col>
@@ -107,7 +130,7 @@ const UserInfo = () => {
                         </Col>
                     </Row>
                 </Col>
-                <Col sm={24} md={12}>
+                <Col sm={24} md={16}>
                     <Form
                         form={form}
                         name="updateInfo"
@@ -145,6 +168,18 @@ const UserInfo = () => {
                             ]}
                         >
                             <Input placeholder="Content" />
+                        </Form.Item>
+                        <Form.Item
+                            label="Ngày sinh"
+                            name="birthday"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Birthday is required!",
+                                },
+                            ]}
+                        >
+                            <DatePicker placeholder="Chọn ngày" />
                         </Form.Item>
                         <Button type="primary" htmlType="submit" loading={isSubmmit}>
                             Cập nhật

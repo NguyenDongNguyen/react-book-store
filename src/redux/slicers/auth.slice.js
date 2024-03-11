@@ -2,6 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 const initialState = {
+    userList: {
+        data: [],
+        meta: {},
+        loading: false,
+        error: null,
+    },
     userInfo: {
         data: {},
         loading: true,
@@ -15,7 +21,15 @@ const initialState = {
         loading: false,
         error: null,
     },
+    createUserData: {
+        loading: false,
+        error: null,
+    },
     updateInfo: {
+        loading: false,
+        error: null,
+    },
+    deleteUserData: {
         loading: false,
         error: null,
     },
@@ -62,6 +76,23 @@ export const authSlice = createSlice({
             localStorage.removeItem("accessToken");
         },
 
+        // get user list
+        getUserListRequest: (state) => {
+            state.userList.loading = true;
+            state.userList.error = null;
+        },
+        getUserListSuccess: (state, action) => {
+            const { data, meta } = action.payload;
+            state.userList.loading = false;
+            state.userList.data = data;
+            state.userList.meta = meta;
+        },
+        getUserListFail: (state, action) => {
+            const { error } = action.payload;
+            state.userList.error = error;
+            state.userList.loading = false;
+        },
+
         // get user info
         getUserInfoRequest: (state) => {
             state.userInfo.loading = true;
@@ -76,6 +107,20 @@ export const authSlice = createSlice({
             const { error } = action.payload;
             state.userInfo.error = error;
             state.userInfo.loading = false;
+        },
+
+        // create user
+        createUserRequest: (state) => {
+            state.createUserData.loading = true;
+            state.createUserData.error = null;
+        },
+        createUserSuccess: (state, action) => {
+            state.createUserData.loading = false;
+        },
+        createUserFail: (state, action) => {
+            const { error } = action.payload;
+            state.createUserData.error = error;
+            state.createUserData.loading = false;
         },
 
         // update user info
@@ -93,6 +138,20 @@ export const authSlice = createSlice({
             state.updateInfo.error = error;
             state.updateInfo.loading = false;
         },
+
+        // delete user
+        deleteUserRequest: (state, action) => {
+            state.deleteUserData.loading = true;
+            state.deleteUserData.error = null;
+        },
+        deleteUserSuccess: (state, action) => {
+            state.deleteUserData.loading = false;
+        },
+        deleteUserFailure: (state, action) => {
+            const { error } = action.payload;
+            state.deleteUserData.loading = false;
+            state.deleteUserData.error = error;
+        },
     },
 });
 
@@ -104,12 +163,21 @@ export const {
     loginSuccess,
     loginFail,
     logoutRequest,
+    getUserListRequest,
+    getUserListSuccess,
+    getUserListFail,
     getUserInfoRequest,
     getUserInfoSuccess,
     getUserInfoFail,
+    createUserRequest,
+    createUserSuccess,
+    createUserFail,
     updateUserInfoRequest,
     updateUserInfoSuccess,
     updateUserInfoFail,
+    deleteUserRequest,
+    deleteUserSuccess,
+    deleteUserFailure,
 } = authSlice.actions;
 
 export default authSlice.reducer;

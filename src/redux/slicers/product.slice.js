@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 import { PRODUCT_LIMIT } from "../../constants/paging";
+import { favoriteProductSuccess, unFavoriteProductSuccess } from "./favorite.slice";
 
 const initialState = {
     productList: {
@@ -132,6 +133,22 @@ export const productSlice = createSlice({
             state.deleteProductData.loading = false;
             state.deleteProductData.error = error;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(favoriteProductSuccess, (state, action) => {
+                const { data } = action.payload;
+                state.productDetail.data.favorites.push(data);
+            })
+            .addCase(unFavoriteProductSuccess, (state, action) => {
+                const { id } = action.payload;
+                if (state.productDetail.data.favorites?.length) {
+                    state.productDetail.data.favorites =
+                        state.productDetail.data.favorites.filter(
+                            (item) => item.id !== id
+                        );
+                }
+            });
     },
 });
 
