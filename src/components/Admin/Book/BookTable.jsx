@@ -222,17 +222,6 @@ const BookTable = () => {
         );
     };
 
-    const handleSearch = (query) => {
-        dispatch(
-            getProductListRequest({
-                ...filterParams,
-                page: 1,
-                limit: ADMIN_TABLE_LIMIT,
-                keyword: query,
-            })
-        );
-    };
-
     const handleExportData = () => {
         //https://stackoverflow.com/questions/70871254/how-can-i-export-a-json-object-to-excel-using-nextjs-react
         if (productList.data.length > 0) {
@@ -243,11 +232,26 @@ const BookTable = () => {
         }
     };
 
+    const handleFilter = (key, values) => {
+        setFilterParams({
+            ...filterParams,
+            [key]: values,
+        });
+        dispatch(
+            getProductListRequest({
+                ...filterParams,
+                [key]: values,
+                page: 1,
+                limit: ADMIN_TABLE_LIMIT,
+            })
+        );
+    };
+
     return (
         <>
             <Row gutter={[20, 20]}>
                 <Col span={24}>
-                    <InputSearch handleSearch={handleSearch} />
+                    <InputSearch handleFilter={handleFilter} />
                 </Col>
                 <Col span={24}>
                     <Table

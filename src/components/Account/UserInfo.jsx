@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateUserInfoRequest } from "../../redux/slicers/auth.slice";
 import { convertImageToBase64 } from "../../utils/file";
 import dayjs from "dayjs";
+import "./style.scss";
 
 const UserInfo = () => {
     const [form] = Form.useForm();

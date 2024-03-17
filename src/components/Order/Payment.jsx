@@ -21,18 +21,21 @@ import {
     getWardListRequest,
 } from "../../redux/slicers/location.slice";
 import { orderProductRequest } from "../../redux/slicers/order.slice";
+import { PayPalButton } from "react-paypal-button-v2";
 
 const Payment = (props) => {
     const { cityList, districtList, wardList } = useSelector(
         (state) => state.location
     );
     const carts = useSelector((state) => state.cart.cartList.data);
-    console.log("🚀 ~ Payment ~ carts:", carts);
     const user = useSelector((state) => state.auth.userInfo.data);
     const [totalPrice, setTotalPrice] = useState(0);
     const [isSubmit, setIsSubmit] = useState(false);
+    const [payment, setPayment] = useState("later_money");
+    const [sdkReady, setSdkReady] = useState(false);
     const dispatch = useDispatch();
     const [form] = Form.useForm();
+    let check = false;
 
     useEffect(() => {
         dispatch(getCityListRequest());
@@ -81,6 +84,8 @@ const Payment = (props) => {
     }, [wardList.data]);
 
     const onFinish = async (values) => {
+        console.log("check: ", check);
+        console.log("test oke");
         setIsSubmit(true);
         const { cityCode, districtCode, wardCode } = values;
         const cityData = cityList.data.find((item) => item.code === cityCode);
@@ -98,14 +103,48 @@ const Payment = (props) => {
                     totalPrice: totalPrice,
                     userId: user?.id,
                     stateId: 1,
+                    isPaid: check === true ? true : false,
                 },
                 cartList: carts,
                 callback: () => props.setCurrentStep(2),
             })
         );
-        console.log("test");
         setIsSubmit(false);
     };
+
+    const onSuccessPaypal = (details, data) => {
+        console.log("details, data: ", details, data);
+        check = true;
+        if (check) {
+            form.submit();
+        }
+    };
+
+    const handlePayment = (e) => {
+        setPayment(e.target.value);
+    };
+
+    const addPaypalScript = async () => {
+        console.log("okee");
+        const data =
+            "ATIrZmWNlfDpKScrFLnZ8SXfzjhmfJFR1PUPnoz_Fh4QWzVHg3Hx7jhRKpuhVgpwbVxWGz7wsLt9AwE6";
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = `https://www.paypal.com/sdk/js?client-id=ATIrZmWNlfDpKScrFLnZ8SXfzjhmfJFR1PUPnoz_Fh4QWzVHg3Hx7jhRKpuhVgpwbVxWGz7wsLt9AwE6`;
+        script.async = true;
+        script.onload = () => {
+            setSdkReady(true);
+        };
+        document.body.appendChild(script);
+    };
+
+    useEffect(() => {
+        if (!window.paypal) {
+            addPaypalScript();
+        } else {
+            setSdkReady(true);
+        }
+    }, []);
 
     return (
         <Row gutter={[20, 20]}>
@@ -256,8 +295,18 @@ const Payment = (props) => {
                     </Form>
                     <div className="info">
                         <div className="method">
-                            <div> Hình thức thanh toán </div>
-                            <Radio checked>Thanh toán khi nhận hàng</Radio>
+                            <div style={{ paddingBottom: "10px" }}>
+                                Hình thức thanh toán
+                            </div>
+                            {/* <Radio checked>Thanh toán khi nhận hàng</Radio> */}
+                            <Radio.Group onChange={handlePayment} value={payment}>
+                                <Radio value="later_money">
+                                    Thanh toán tiền mặt khi nhận hàng
+                                </Radio>
+                                <Radio value="paypal">
+                                    Thanh toán tiền bằng paypal
+                                </Radio>
+                            </Radio.Group>
                         </div>
 
                         <Divider style={{ margin: "5px 0" }} />
@@ -271,18 +320,29 @@ const Payment = (props) => {
                             </span>
                         </div>
                         <Divider style={{ margin: "10px 0" }} />
-                        <button
-                            onClick={() => form.submit()}
-                            disabled={isSubmit}
-                            style={{ width: "100%" }}
-                        >
-                            {isSubmit && (
-                                <span>
-                                    <LoadingOutlined /> &nbsp;
-                                </span>
-                            )}
-                            Đặt Hàng ({carts.length ?? 0})
-                        </button>
+                        {payment === "paypal" && sdkReady ? (
+                            <PayPalButton
+                                amount={Math.floor(totalPrice / 24000)}
+                                // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
+                                onSuccess={onSuccessPaypal}
+                                onError={() => {
+                                    alert("Erroe");
+                                }}
+                            />
+                        ) : (
+                            <button
+                                onClick={() => form.submit()}
+                                disabled={isSubmit}
+                                style={{ width: "100%" }}
+                            >
+                                {isSubmit && (
+                                    <span>
+                                        <LoadingOutlined /> &nbsp;
+                                    </span>
+                                )}
+                                Đặt Hàng ({carts.length ?? 0})
+                            </button>
+                        )}
                     </div>
                 </div>
             </Col>

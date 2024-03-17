@@ -53,6 +53,20 @@ const HistoryPage = () => {
             },
         },
         {
+            title: "Tình trạng",
+            render: (text, record, index) => {
+                return (
+                    <>
+                        {record?.isPaid === true ? (
+                            <Tag color="green">Đã thanh toán</Tag>
+                        ) : (
+                            <Tag color="red">Chưa thanh toán</Tag>
+                        )}
+                    </>
+                );
+            },
+        },
+        {
             title: "Trạng thái",
             render: (text, record, index) => {
                 return (
@@ -79,7 +93,7 @@ const HistoryPage = () => {
             render: (text, record, index) => {
                 return (
                     <>
-                        {record.stateId === 1 ? (
+                        {record.stateId === 1 && record.isPaid === false ? (
                             <Button
                                 danger
                                 onClick={() =>

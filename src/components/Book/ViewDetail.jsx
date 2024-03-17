@@ -331,7 +331,7 @@ const ViewDetail = () => {
             <div
                 className="view-detail-book"
                 style={{
-                    maxWidth: 1440,
+                    maxWidth: 1300,
                     margin: "0 auto",
                     minHeight: "calc(100vh - 150px)",
                 }}

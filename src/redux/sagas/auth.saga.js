@@ -48,9 +48,6 @@ function* loginSaga(action) {
         yield localStorage.setItem("accessToken", result.data.accessToken);
         yield put(loginSuccess({ data: result.data.user }));
         yield callback(result.data.user.role);
-        notification.success({
-            message: "Đăng nhập thành công",
-        });
     } catch (e) {
         console.log(e);
         yield put(loginFail({ error: "Email or password is incorrect" }));

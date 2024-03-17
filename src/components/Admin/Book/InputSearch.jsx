@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { Button, Col, Form, Input, Row, theme } from "antd";
+import React, { useEffect, useMemo, useState } from "react";
+import { Button, Col, Form, Input, Row, Select, theme } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { getCategoryListRequest } from "../../../redux/slicers/category.slice";
 
-const AdvancedSearchForm = ({ handleSearch }) => {
+const AdvancedSearchForm = ({ handleFilter }) => {
     const { token } = theme.useToken();
     const [form] = Form.useForm();
+    const dispatch = useDispatch();
+    const { categoryList } = useSelector((state) => state.category);
 
     const formStyle = {
         maxWidth: "none",
@@ -12,85 +16,54 @@ const AdvancedSearchForm = ({ handleSearch }) => {
         padding: 24,
     };
 
-    const onFinish = (values) => {
-        console.log("Received values of form: ", values);
-        let query = "";
-        //build query
-        if (values.mainText) {
-            query = values.mainText;
-        }
+    useEffect(() => {
+        dispatch(getCategoryListRequest());
+    }, []);
 
-        if (values.author) {
-            query = values.author;
-        }
-
-        if (values.category) {
-            query = values.category;
-        }
-
-        if (query) {
-            handleSearch(query);
-        }
-    };
+    const renderCategoryOptions = useMemo(() => {
+        return categoryList.data.map((item) => {
+            return (
+                <Select.Option key={item.id} value={item.code}>
+                    {item.name}
+                </Select.Option>
+            );
+        });
+    }, [categoryList.data]);
 
     return (
-        <Form
-            form={form}
-            name="advanced_search"
-            style={formStyle}
-            onFinish={onFinish}
-        >
+        <Form form={form} name="advanced_search" style={formStyle}>
             <Row gutter={24}>
-                <Col span={8}>
+                <Col span={12}>
                     <Form.Item
                         labelCol={{ span: 24 }} //whole column
                         name={`mainText`}
                         label={`Tên sách`}
                     >
-                        <Input placeholder="placeholder" />
-                    </Form.Item>
-                </Col>
-                <Col span={8}>
-                    <Form.Item
-                        labelCol={{ span: 24 }} //whole column
-                        name={`author`}
-                        label={`Tác giả`}
-                    >
-                        <Input placeholder="placeholder" />
+                        <Input
+                            id="keyword"
+                            onChange={(e) => handleFilter("keyword", e.target.value)}
+                            placeholder="Tên sản phẩm"
+                        />
                     </Form.Item>
                 </Col>
 
-                <Col span={8}>
+                <Col span={12}>
                     <Form.Item
                         labelCol={{ span: 24 }} //whole column
                         name={`category`}
                         label={`Thể loại`}
                     >
-                        <Input placeholder="placeholder" />
+                        <Select
+                            id="categoryId"
+                            mode="multiple"
+                            allowClear
+                            onChange={(values) => handleFilter("categoryId", values)}
+                            placeholder="Thể loại"
+                            style={{ width: "100%" }}
+                        >
+                            {renderCategoryOptions}
+                        </Select>
                     </Form.Item>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24} style={{ textAlign: "right" }}>
-                    <Button type="primary" htmlType="submit">
-                        Search
-                    </Button>
-                    <Button
-                        style={{ margin: "0 8px" }}
-                        onClick={() => {
-                            form.resetFields();
-                        }}
-                    >
-                        Clear
-                    </Button>
-                    {/* <a
-                        style={{ fontSize: 12 }}
-                        onClick={() => {
-                            setExpand(!expand);
-                        }}
-                    >
-                        {expand ? <UpOutlined /> : <DownOutlined />} Collapse
-                    </a> */}
                 </Col>
             </Row>
         </Form>
@@ -99,10 +72,10 @@ const AdvancedSearchForm = ({ handleSearch }) => {
 
 // https://stackblitz.com/run?file=demo.tsx
 // https://ant.design/components/form
-const InputSearch = ({ handleSearch }) => {
+const InputSearch = ({ handleFilter }) => {
     return (
         <div>
-            <AdvancedSearchForm handleSearch={handleSearch} />
+            <AdvancedSearchForm handleFilter={handleFilter} />
         </div>
     );
 };

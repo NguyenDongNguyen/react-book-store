@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Form, Input, Row, theme } from "antd";
 
-const AdvancedSearchForm = ({ handleSearch }) => {
+const AdvancedSearchForm = ({ handleFilter }) => {
     const { token } = theme.useToken();
     const [form] = Form.useForm();
 
@@ -12,34 +12,8 @@ const AdvancedSearchForm = ({ handleSearch }) => {
         padding: 24,
     };
 
-    const onFinish = (values) => {
-        console.log("Received values of form: ", values);
-        let query = "";
-        //build query
-        if (values.fullName) {
-            query = values.fullName;
-        }
-
-        if (values.email) {
-            query = values.email;
-        }
-
-        if (values.phone) {
-            query = values.phone;
-        }
-
-        if (query) {
-            handleSearch(query);
-        }
-    };
-
     return (
-        <Form
-            form={form}
-            name="advanced_search"
-            style={formStyle}
-            onFinish={onFinish}
-        >
+        <Form form={form} name="advanced_search" style={formStyle}>
             <Row gutter={24}>
                 <Col span={8}>
                     <Form.Item
@@ -47,7 +21,11 @@ const AdvancedSearchForm = ({ handleSearch }) => {
                         name={`fullName`}
                         label={`Name`}
                     >
-                        <Input placeholder="placeholder" />
+                        <Input
+                            id="keyword"
+                            onChange={(e) => handleFilter("keyword", e.target.value)}
+                            placeholder="Tên người dùng"
+                        />
                     </Form.Item>
                 </Col>
                 <Col span={8}>
@@ -56,7 +34,11 @@ const AdvancedSearchForm = ({ handleSearch }) => {
                         name={`email`}
                         label={`Email`}
                     >
-                        <Input placeholder="placeholder" />
+                        <Input
+                            id="keyword"
+                            onChange={(e) => handleFilter("keyword", e.target.value)}
+                            placeholder="Email"
+                        />
                     </Form.Item>
                 </Col>
 
@@ -66,31 +48,12 @@ const AdvancedSearchForm = ({ handleSearch }) => {
                         name={`phone`}
                         label={`Số điện thoại`}
                     >
-                        <Input placeholder="placeholder" />
+                        <Input
+                            id="keyword"
+                            onChange={(e) => handleFilter("keyword", e.target.value)}
+                            placeholder="Số điện thoại"
+                        />
                     </Form.Item>
-                </Col>
-            </Row>
-            <Row>
-                <Col span={24} style={{ textAlign: "right" }}>
-                    <Button type="primary" htmlType="submit">
-                        Search
-                    </Button>
-                    <Button
-                        style={{ margin: "0 8px" }}
-                        onClick={() => {
-                            form.resetFields();
-                        }}
-                    >
-                        Clear
-                    </Button>
-                    {/* <a
-                        style={{ fontSize: 12 }}
-                        onClick={() => {
-                            setExpand(!expand);
-                        }}
-                    >
-                        {expand ? <UpOutlined /> : <DownOutlined />} Collapse
-                    </a> */}
                 </Col>
             </Row>
         </Form>
@@ -99,10 +62,10 @@ const AdvancedSearchForm = ({ handleSearch }) => {
 
 // https://stackblitz.com/run?file=demo.tsx
 // https://ant.design/components/form
-const InputSearch = ({ handleSearch }) => {
+const InputSearch = ({ handleFilter }) => {
     return (
         <div>
-            <AdvancedSearchForm handleSearch={handleSearch} />
+            <AdvancedSearchForm handleFilter={handleFilter} />
         </div>
     );
 };

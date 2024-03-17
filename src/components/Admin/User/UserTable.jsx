@@ -227,14 +227,17 @@ const UserTable = () => {
         );
     };
 
-    const handleSearch = (query) => {
-        console.log("okeee");
+    const handleFilter = (key, values) => {
+        setFilterParams({
+            ...filterParams,
+            [key]: values,
+        });
         dispatch(
             getUserListRequest({
                 ...filterParams,
                 page: 1,
                 limit: ADMIN_TABLE_LIMIT,
-                keyword: query,
+                [key]: values,
             })
         );
     };
@@ -253,7 +256,7 @@ const UserTable = () => {
         <>
             <Row gutter={[20, 20]}>
                 <Col span={24}>
-                    <InputSearch handleSearch={handleSearch} />
+                    <InputSearch handleFilter={handleFilter} />
                 </Col>
                 <Col span={24}>
                     <Table

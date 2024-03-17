@@ -5,6 +5,7 @@ import {
     Outlet,
     RouterProvider,
     useLocation,
+    useNavigate,
 } from "react-router-dom";
 import LoginPage from "./pages/login";
 // import ContactPage from './pages/contact';
@@ -15,7 +16,7 @@ import Footer from "./components/Footer";
 import Home from "./components/Home";
 import RegisterPage from "./pages/register";
 import NotFound from "./components/NotFound";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LayoutAdmin from "./components/Admin/LayoutAdmin";
 import ManageUser from "./pages/manageUser";
 import ManageBookPage from "./pages/manageBook";
@@ -23,17 +24,29 @@ import OrderPage from "./pages/order";
 import HistoryPage from "./components/History";
 import ManageOrderPage from "./pages/manageOrder";
 import { jwtDecode } from "jwt-decode";
-import { getUserInfoRequest } from "./redux/slicers/auth.slice";
+import { getUserInfoRequest, logoutRequest } from "./redux/slicers/auth.slice";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import "dayjs/locale/vi";
 import ProductList from "./components/ProductList";
+import { notification } from "antd";
 
 dayjs.locale("vi");
 dayjs.extend(relativeTime);
 
 const Layout = () => {
     const { pathname } = useLocation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { userInfo } = useSelector((state) => state.auth);
+
+    useEffect(() => {
+        if (userInfo.data.isDelete === true) {
+            notification.error({ message: "Tài khoản của bạn đã bị khoá" });
+            dispatch(logoutRequest());
+            navigate("/login");
+        }
+    }, [userInfo.data.id]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
